@@ -1,0 +1,13 @@
+[
+  {
+    "_schema": {
+      "id": "string — unique identifier, e.g. 'circuits_001'",
+      "domain": "string — one of: circuits, debugging, math, physics, algorithms, networking",
+      "english": "string — problem statement in English",
+      "french": "string — problem statement in French (standard)",
+      "msa": "string — problem statement in Modern Standard Arabic",
+      "code_switched_tn": "string — problem in Tunisian trilingual code-switching (Fr + Derja + Eng) — fill manually",
+      "expected_answer": "string — the correct answer (must be identical across all four language versions)"
+    }
+  }
+]
