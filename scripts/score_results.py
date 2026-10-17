@@ -50,10 +50,32 @@ SUMMARY_OUTPUT = RESULTS_DIR / "summary.csv"
 
 _GENERATION_ERROR_RE = re.compile(r"^\[GENERATION_ERROR", re.IGNORECASE)
 
+# Canonical short forms for common unit spellings
+_UNIT_MAP = {
+    r"\bvolts?\b":   "v",
+    r"\bamperes?\b": "a",
+    r"\bamps?\b":    "a",
+    r"\bwatts?\b":   "w",
+    r"\bjoules?\b":  "j",
+    r"\bnewtons?\b": "n",
+    r"\bohms?\b":    "ohm",
+    r"\bfarads?\b":  "f",
+    r"\bhertz\b":    "hz",
+    r"\bpascals?\b": "pa",
+    r"\bmeters?\b":  "m",
+    r"\bseconds?\b": "s",
+}
+
 
 def _normalise(text: str) -> str:
-    """Lowercase, strip whitespace, collapse internal spaces."""
-    return re.sub(r"\s+", " ", str(text).lower().strip())
+    """Lowercase, collapse whitespace, normalise unit spellings and spacing."""
+    t = re.sub(r"\s+", " ", str(text).lower().strip())
+    # Expand unit names to short forms
+    for pattern, replacement in _UNIT_MAP.items():
+        t = re.sub(pattern, replacement, t)
+    # Remove spaces between a number and an adjacent unit (e.g. "20 v" -> "20v")
+    t = re.sub(r"(\d)\s+([a-zμΩ°·/])", r"\1\2", t)
+    return t
 
 
 def _score_row(response: str, expected: str) -> str:

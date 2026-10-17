@@ -6,8 +6,8 @@
       "english": "string — problem statement in English",
       "french": "string — problem statement in French (standard)",
       "msa": "string — problem statement in Modern Standard Arabic",
-      "code_switched_tn": "string — problem in Tunisian trilingual code-switching (Fr + Derja + Eng) — fill manually",
-      "expected_answer": "string — the correct answer (must be identical across all four language versions)"
+      "code_switched_tn": "string — problem in Tunisian trilingual code-switching (Arabizi + Fr + En)",
+      "expected_answer": "string — minimal correct answer, identical across all four language versions"
     }
   },
   {
@@ -25,17 +25,206 @@
     "english": "Two resistors of 4 ohms and 6 ohms are connected in series. What is the total resistance?",
     "french": "Deux résistances de 4 ohms et 6 ohms sont connectées en série. Quelle est la résistance totale?",
     "msa": "مقاومتان قيمتاهما 4 أوم و6 أوم متصلتان على التوالي. ما هي المقاومة الكلية؟",
-    "code_switched_tn": "3andi deux résistances — wahda 4 ohms w l'autre 6 ohms — mwaslén en série. Qaddech el résistance totale?",
+    "code_switched_tn": "3andi deux résistances — wahda 4 ohms w l'autre 6 ohms — mwaslin en série. Qaddech el résistance totale?",
     "expected_answer": "10 ohms"
+  },
+  {
+    "id": "circuits_003",
+    "domain": "circuits",
+    "english": "Two resistors of 6 ohms and 3 ohms are connected in parallel. What is the equivalent resistance?",
+    "french": "Deux résistances de 6 ohms et 3 ohms sont connectées en parallèle. Quelle est la résistance équivalente?",
+    "msa": "مقاومتان قيمتاهما 6 أوم و3 أوم متصلتان على التوازي. ما هي المقاومة المكافئة؟",
+    "code_switched_tn": "3andi deux résistances — wahda 6 ohms w l'autre 3 ohms — mwaslin en parallèle. Qaddech el résistance équivalente?",
+    "expected_answer": "2 ohms"
+  },
+  {
+    "id": "circuits_004",
+    "domain": "circuits",
+    "english": "A circuit has a voltage of 12 volts and a current of 3 amperes. What is the power dissipated?",
+    "french": "Un circuit a une tension de 12 volts et un courant de 3 ampères. Quelle est la puissance dissipée?",
+    "msa": "دائرة كهربائية جهدها 12 فولت وتيارها 3 أمبير. ما هي القدرة المبددة؟",
+    "code_switched_tn": "3andi circuit, el voltage ta3hu 12 volts w el current 3 ampères. Qaddech el puissance?",
+    "expected_answer": "36W"
+  },
+  {
+    "id": "circuits_005",
+    "domain": "circuits",
+    "english": "A resistor of 5 ohms carries a current of 2 amperes. What is the power dissipated?",
+    "french": "Une résistance de 5 ohms est traversée par un courant de 2 ampères. Quelle est la puissance dissipée?",
+    "msa": "مقاومة قيمتها 5 أوم يسري خلالها تيار شدته 2 أمبير. ما هي القدرة المبددة؟",
+    "code_switched_tn": "3andi résistance de 5 ohms w current ta3ha 2 ampères. Qaddech el puissance mta3ha?",
+    "expected_answer": "20W"
+  },
+  {
+    "id": "circuits_006",
+    "domain": "circuits",
+    "english": "A circuit has a voltage of 24 volts and a resistance of 8 ohms. What is the current?",
+    "french": "Un circuit a une tension de 24 volts et une résistance de 8 ohms. Quel est le courant?",
+    "msa": "دائرة كهربائية جهدها 24 فولت ومقاومتها 8 أوم. ما شدة التيار الكهربائي؟",
+    "code_switched_tn": "3andi circuit, el voltage 24 volts w el résistance 8 ohms. Qaddech el current?",
+    "expected_answer": "3A"
+  },
+  {
+    "id": "circuits_007",
+    "domain": "circuits",
+    "english": "Three resistors of 2 ohms, 3 ohms, and 5 ohms are connected in series. What is the total resistance?",
+    "french": "Trois résistances de 2 ohms, 3 ohms et 5 ohms sont connectées en série. Quelle est la résistance totale?",
+    "msa": "ثلاث مقاومات قيمها 2 أوم و3 أوم و5 أوم متصلة على التوالي. ما هي المقاومة الكلية؟",
+    "code_switched_tn": "3andi tletha résistances — 2, 3, w 5 ohms — mwaslin en série. Qaddech el résistance totale?",
+    "expected_answer": "10 ohms"
+  },
+  {
+    "id": "circuits_008",
+    "domain": "circuits",
+    "english": "A capacitor of 4 farads is charged to a voltage of 3 volts. What is the energy stored in it?",
+    "french": "Un condensateur de 4 farads est chargé à une tension de 3 volts. Quelle est l'énergie stockée?",
+    "msa": "مكثف سعته 4 فاراد مشحون بجهد 3 فولت. ما هي الطاقة المخزنة فيه؟",
+    "code_switched_tn": "3andi condensateur de 4 farads, chargé bech voltage 3 volts. Qaddech el énergie stockée fih?",
+    "expected_answer": "18J"
+  },
+  {
+    "id": "circuits_009",
+    "domain": "circuits",
+    "english": "An RC circuit has a resistance of 100 ohms and a capacitance of 0.01 farads. What is the time constant?",
+    "french": "Un circuit RC a une résistance de 100 ohms et une capacité de 0.01 farads. Quelle est la constante de temps?",
+    "msa": "دائرة RC تحتوي على مقاومة 100 أوم وسعة 0.01 فاراد. ما هو ثابت الزمن؟",
+    "code_switched_tn": "3andi circuit RC, résistance 100 ohms w capacité 0.01 farads. Qaddech el constante de temps?",
+    "expected_answer": "1s"
+  },
+  {
+    "id": "circuits_010",
+    "domain": "circuits",
+    "english": "A voltage divider has a 10V source with R1 = 4 ohms and R2 = 6 ohms in series. What is the voltage across R2?",
+    "french": "Un diviseur de tension a une source de 10V avec R1 = 4 ohms et R2 = 6 ohms en série. Quelle est la tension aux bornes de R2?",
+    "msa": "مقسم الجهد يحتوي على مصدر 10 فولت مع R1 = 4 أوم و R2 = 6 أوم على التوالي. ما هو الجهد على R2؟",
+    "code_switched_tn": "3andi diviseur de tension: source 10V, R1 = 4 ohms w R2 = 6 ohms en série. Qaddech el voltage 3la R2?",
+    "expected_answer": "6V"
+  },
+  {
+    "id": "circuits_011",
+    "domain": "circuits",
+    "english": "Two resistors of 4 ohms and 12 ohms are connected in parallel. What is the equivalent resistance?",
+    "french": "Deux résistances de 4 ohms et 12 ohms sont connectées en parallèle. Quelle est la résistance équivalente?",
+    "msa": "مقاومتان قيمتاهما 4 أوم و12 أوم متصلتان على التوازي. ما هي المقاومة المكافئة؟",
+    "code_switched_tn": "3andi deux résistances — 4 ohms w 12 ohms — mwaslin en parallèle. Qaddech el résistance équivalente?",
+    "expected_answer": "3 ohms"
+  },
+  {
+    "id": "circuits_012",
+    "domain": "circuits",
+    "english": "A device dissipates 18 watts of power and carries a current of 3 amperes. What is the voltage across it?",
+    "french": "Un appareil dissipe 18 watts de puissance et est traversé par un courant de 3 ampères. Quelle est la tension à ses bornes?",
+    "msa": "جهاز يبدد طاقة 18 واط ويسري فيه تيار شدته 3 أمبير. ما هو الجهد عليه؟",
+    "code_switched_tn": "3andi appareil: puissance 18 watts w current 3 ampères. Qaddech el voltage 3lih?",
+    "expected_answer": "6V"
   },
   {
     "id": "math_001",
     "domain": "math",
-    "english": "What is the derivative of f(x) = x^2 + 3x + 5?",
-    "french": "Quelle est la dérivée de f(x) = x^2 + 3x + 5?",
-    "msa": "ما هو مشتق الدالة f(x) = x^2 + 3x + 5؟",
-    "code_switched_tn": "Chnouwa el dérivée mta3 f(x) = x^2 + 3x + 5?",
-    "expected_answer": "f'(x) = 2x + 3"
+    "english": "What is the derivative of f(x) = x² + 3x + 5?",
+    "french": "Quelle est la dérivée de f(x) = x² + 3x + 5?",
+    "msa": "ما هو مشتق الدالة f(x) = x² + 3x + 5؟",
+    "code_switched_tn": "Chnouwa el dérivée mta3 f(x) = x² + 3x + 5?",
+    "expected_answer": "2x + 3"
+  },
+  {
+    "id": "math_002",
+    "domain": "math",
+    "english": "What is the indefinite integral of f(x) = 2x?",
+    "french": "Quelle est l'intégrale indéfinie de f(x) = 2x?",
+    "msa": "ما هو التكامل غير المحدد للدالة f(x) = 2x؟",
+    "code_switched_tn": "Chnouwa el intégrale indéfinie mta3 f(x) = 2x?",
+    "expected_answer": "x² + C"
+  },
+  {
+    "id": "math_003",
+    "domain": "math",
+    "english": "What is the limit of f(x) = x² as x approaches 3?",
+    "french": "Quelle est la limite de f(x) = x² quand x tend vers 3?",
+    "msa": "ما هي نهاية الدالة f(x) = x² عندما يقترب x من 3؟",
+    "code_switched_tn": "Chnouwa el limite mta3 f(x) = x² ki x tqarrab men 3?",
+    "expected_answer": "9"
+  },
+  {
+    "id": "math_004",
+    "domain": "math",
+    "english": "Solve for x: 3x - 9 = 0",
+    "french": "Résoudre pour x: 3x - 9 = 0",
+    "msa": "أوجد قيمة x: 3x - 9 = 0",
+    "code_switched_tn": "7al x fi: 3x - 9 = 0",
+    "expected_answer": "x = 3"
+  },
+  {
+    "id": "math_005",
+    "domain": "math",
+    "english": "What is the value of log base 2 of 16?",
+    "french": "Quelle est la valeur du logarithme en base 2 de 16?",
+    "msa": "ما هي قيمة لوغاريتم 16 بالأساس 2؟",
+    "code_switched_tn": "Qaddech log base 2 mta3 16?",
+    "expected_answer": "4"
+  },
+  {
+    "id": "math_006",
+    "domain": "math",
+    "english": "What is the derivative of f(x) = sin(x)?",
+    "french": "Quelle est la dérivée de f(x) = sin(x)?",
+    "msa": "ما هو مشتق الدالة f(x) = sin(x)؟",
+    "code_switched_tn": "Chnouwa el dérivée mta3 f(x) = sin(x)?",
+    "expected_answer": "cos(x)"
+  },
+  {
+    "id": "math_007",
+    "domain": "math",
+    "english": "What is the sum of the first 10 natural numbers (1 + 2 + ... + 10)?",
+    "french": "Quelle est la somme des 10 premiers nombres naturels (1 + 2 + ... + 10)?",
+    "msa": "ما هو مجموع أول 10 أعداد طبيعية (1 + 2 + ... + 10)؟",
+    "code_switched_tn": "Qaddech somme mta3 awel 10 nombres naturels (1 + 2 + ... + 10)?",
+    "expected_answer": "55"
+  },
+  {
+    "id": "math_008",
+    "domain": "math",
+    "english": "What is the derivative of f(x) = e^x?",
+    "french": "Quelle est la dérivée de f(x) = e^x?",
+    "msa": "ما هو مشتق الدالة f(x) = e^x؟",
+    "code_switched_tn": "Chnouwa el dérivée mta3 f(x) = e^x?",
+    "expected_answer": "e^x"
+  },
+  {
+    "id": "math_009",
+    "domain": "math",
+    "english": "Solve for x: x² - 9 = 0",
+    "french": "Résoudre pour x: x² - 9 = 0",
+    "msa": "أوجد قيمة x: x² - 9 = 0",
+    "code_switched_tn": "7al x fi: x² - 9 = 0",
+    "expected_answer": "x = ±3"
+  },
+  {
+    "id": "math_010",
+    "domain": "math",
+    "english": "What is the indefinite integral of f(x) = cos(x)?",
+    "french": "Quelle est l'intégrale indéfinie de f(x) = cos(x)?",
+    "msa": "ما هو التكامل غير المحدد للدالة f(x) = cos(x)؟",
+    "code_switched_tn": "Chnouwa el intégrale mta3 f(x) = cos(x)?",
+    "expected_answer": "sin(x) + C"
+  },
+  {
+    "id": "math_011",
+    "domain": "math",
+    "english": "What is the value of the binomial coefficient C(6, 2)?",
+    "french": "Quelle est la valeur du coefficient binomial C(6, 2)?",
+    "msa": "ما هي قيمة المعامل الثنائي C(6, 2)؟",
+    "code_switched_tn": "Qaddech el coefficient binomial C(6, 2)?",
+    "expected_answer": "15"
+  },
+  {
+    "id": "math_012",
+    "domain": "math",
+    "english": "What is the derivative of f(x) = x³?",
+    "french": "Quelle est la dérivée de f(x) = x³?",
+    "msa": "ما هو مشتق الدالة f(x) = x³؟",
+    "code_switched_tn": "Chnouwa el dérivée mta3 f(x) = x³?",
+    "expected_answer": "3x²"
   },
   {
     "id": "algorithms_001",
@@ -43,8 +232,107 @@
     "english": "What is the time complexity of binary search on a sorted array of n elements?",
     "french": "Quelle est la complexité temporelle de la recherche binaire sur un tableau trié de n éléments?",
     "msa": "ما هو تعقيد الوقت لخوارزمية البحث الثنائي على مصفوفة مرتبة من n عنصر؟",
-    "code_switched_tn": "Chnouwa el time complexity mta3 binary search fi sorted array fih n elements?",
+    "code_switched_tn": "Chnouwa el time complexity mta3 binary search fi sorted array fih n éléments?",
     "expected_answer": "O(log n)"
+  },
+  {
+    "id": "algorithms_002",
+    "domain": "algorithms",
+    "english": "What is the worst-case time complexity of bubble sort?",
+    "french": "Quelle est la complexité temporelle dans le pire cas du tri à bulles?",
+    "msa": "ما هو تعقيد الوقت في أسوأ حالة لخوارزمية الفرز الفقاعي؟",
+    "code_switched_tn": "Chnouwa el worst-case time complexity mta3 bubble sort?",
+    "expected_answer": "O(n²)"
+  },
+  {
+    "id": "algorithms_003",
+    "domain": "algorithms",
+    "english": "What is the time complexity of merge sort?",
+    "french": "Quelle est la complexité temporelle du tri fusion?",
+    "msa": "ما هو تعقيد الوقت لخوارزمية الفرز بالدمج؟",
+    "code_switched_tn": "Chnouwa el time complexity mta3 merge sort?",
+    "expected_answer": "O(n log n)"
+  },
+  {
+    "id": "algorithms_004",
+    "domain": "algorithms",
+    "english": "What is the time complexity of linear search on an unsorted array of n elements?",
+    "french": "Quelle est la complexité temporelle de la recherche linéaire sur un tableau non trié de n éléments?",
+    "msa": "ما هو تعقيد الوقت للبحث الخطي في مصفوفة غير مرتبة من n عنصر؟",
+    "code_switched_tn": "Chnouwa el time complexity mta3 linear search fi array machi sorted fih n éléments?",
+    "expected_answer": "O(n)"
+  },
+  {
+    "id": "algorithms_005",
+    "domain": "algorithms",
+    "english": "What is the average-case time complexity of a hash table lookup?",
+    "french": "Quelle est la complexité temporelle en moyenne d'une recherche dans une table de hachage?",
+    "msa": "ما هو تعقيد الوقت في المتوسط للبحث في جدول التجزئة؟",
+    "code_switched_tn": "Chnouwa el average time complexity mta3 lookup fi hash table?",
+    "expected_answer": "O(1)"
+  },
+  {
+    "id": "algorithms_006",
+    "domain": "algorithms",
+    "english": "What is the average-case time complexity of quicksort?",
+    "french": "Quelle est la complexité temporelle en moyenne du tri rapide?",
+    "msa": "ما هو تعقيد الوقت في المتوسط لخوارزمية الفرز السريع؟",
+    "code_switched_tn": "Chnouwa el average time complexity mta3 quicksort?",
+    "expected_answer": "O(n log n)"
+  },
+  {
+    "id": "algorithms_007",
+    "domain": "algorithms",
+    "english": "What is the time complexity of breadth-first search on a graph with V vertices and E edges?",
+    "french": "Quelle est la complexité temporelle de la recherche en largeur sur un graphe avec V sommets et E arêtes?",
+    "msa": "ما هو تعقيد الوقت للبحث بالعرض في رسم بياني يحتوي على V رأس و E حافة؟",
+    "code_switched_tn": "Chnouwa el time complexity mta3 BFS fi graphe fih V sommets w E arêtes?",
+    "expected_answer": "O(V + E)"
+  },
+  {
+    "id": "algorithms_008",
+    "domain": "algorithms",
+    "english": "What is the time complexity of a push or pop operation on a stack?",
+    "french": "Quelle est la complexité temporelle d'une opération push ou pop sur une pile?",
+    "msa": "ما هو تعقيد الوقت لعملية الإضافة أو الحذف على المكدس؟",
+    "code_switched_tn": "Chnouwa el time complexity mta3 push wella pop fi stack?",
+    "expected_answer": "O(1)"
+  },
+  {
+    "id": "algorithms_009",
+    "domain": "algorithms",
+    "english": "What is the time complexity of the naive recursive Fibonacci algorithm?",
+    "french": "Quelle est la complexité temporelle de l'algorithme récursif naïf de Fibonacci?",
+    "msa": "ما هو تعقيد الوقت لخوارزمية فيبوناتشي التكرارية الساذجة؟",
+    "code_switched_tn": "Chnouwa el time complexity mta3 algorithme récursif naïf mta3 Fibonacci?",
+    "expected_answer": "O(2^n)"
+  },
+  {
+    "id": "algorithms_010",
+    "domain": "algorithms",
+    "english": "What is the space complexity of iterative binary search?",
+    "french": "Quelle est la complexité spatiale de la recherche binaire itérative?",
+    "msa": "ما هو تعقيد الفضاء للبحث الثنائي التكراري؟",
+    "code_switched_tn": "Chnouwa el space complexity mta3 iterative binary search?",
+    "expected_answer": "O(1)"
+  },
+  {
+    "id": "algorithms_011",
+    "domain": "algorithms",
+    "english": "What is the time complexity of the heapify operation on a binary heap?",
+    "french": "Quelle est la complexité temporelle de l'opération heapify sur un tas binaire?",
+    "msa": "ما هو تعقيد الوقت لعملية heapify على كومة ثنائية؟",
+    "code_switched_tn": "Chnouwa el time complexity mta3 heapify fi binary heap?",
+    "expected_answer": "O(log n)"
+  },
+  {
+    "id": "algorithms_012",
+    "domain": "algorithms",
+    "english": "What is the time complexity of selection sort?",
+    "french": "Quelle est la complexité temporelle du tri par sélection?",
+    "msa": "ما هو تعقيد الوقت لخوارزمية الفرز بالاختيار؟",
+    "code_switched_tn": "Chnouwa el time complexity mta3 selection sort?",
+    "expected_answer": "O(n²)"
   },
   {
     "id": "debugging_001",
@@ -56,13 +344,175 @@
     "expected_answer": "Missing return statement"
   },
   {
+    "id": "debugging_002",
+    "domain": "debugging",
+    "english": "A Python loop uses range(1, n) but should include n in its iteration. What type of bug is this?",
+    "french": "Une boucle Python utilise range(1, n) mais devrait inclure n dans son itération. Quel type de bug est-ce?",
+    "msa": "حلقة بايثون تستخدم range(1, n) لكنها يجب أن تشمل n في تكرارها. ما نوع هذا الخطأ؟",
+    "code_switched_tn": "3andi boucle Python testa3mel range(1, n) mé lazem tshmel n. Chnouwa naw3 el bug hedha?",
+    "expected_answer": "Off-by-one error"
+  },
+  {
+    "id": "debugging_003",
+    "domain": "debugging",
+    "english": "A Python function divides a number by a variable that can be zero. What error will Python raise?",
+    "french": "Une fonction Python divise un nombre par une variable qui peut être zéro. Quelle erreur Python va-t-il lever?",
+    "msa": "دالة بايثون تقسم عدداً على متغير قد يساوي صفراً. ما هو الخطأ الذي سيرفعه بايثون؟",
+    "code_switched_tn": "3andi fonction Python tqassem 3la valeur elli yomken tkoun zéro. Chnouwa el erreur elli Python bch ycharah?",
+    "expected_answer": "ZeroDivisionError"
+  },
+  {
+    "id": "debugging_004",
+    "domain": "debugging",
+    "english": "A Python script uses a variable that was never defined. What error does Python raise?",
+    "french": "Un script Python utilise une variable qui n'a jamais été définie. Quelle erreur Python va-t-il lever?",
+    "msa": "سكريبت بايثون يستخدم متغيراً لم يُعرَّف من قبل. ما هو الخطأ الذي يرفعه بايثون؟",
+    "code_switched_tn": "3andi script Python yesta3mel variable machi m3arrfa. Chnouwa el erreur elli Python ycharah?",
+    "expected_answer": "NameError"
+  },
+  {
+    "id": "debugging_005",
+    "domain": "debugging",
+    "english": "A Python list has 5 elements and the code accesses index 5. What error occurs?",
+    "french": "Une liste Python a 5 éléments et le code accède à l'index 5. Quelle erreur se produit?",
+    "msa": "قائمة بايثون تحتوي على 5 عناصر والكود يصل إلى الفهرس 5. ما هو الخطأ الذي يحدث؟",
+    "code_switched_tn": "3andi liste Python fihé 5 éléments w el code y7awel y9ra index 5. Chnouwa el erreur?",
+    "expected_answer": "IndexError"
+  },
+  {
+    "id": "debugging_006",
+    "domain": "debugging",
+    "english": "A Python while loop runs forever because the loop counter is never incremented. What is the bug?",
+    "french": "Une boucle while Python s'exécute indéfiniment car le compteur de boucle n'est jamais incrémenté. Quel est le bug?",
+    "msa": "حلقة while في بايثون تعمل إلى الأبد لأن عداد الحلقة لا يُزاد أبداً. ما هو الخطأ؟",
+    "code_switched_tn": "3andi boucle while fi Python ddurt lel abada wkhé el compteur machi yzid. Chnouwa el bug?",
+    "expected_answer": "Infinite loop"
+  },
+  {
+    "id": "debugging_007",
+    "domain": "debugging",
+    "english": "A Python program tries to concatenate a string with an integer using the + operator. What error occurs?",
+    "french": "Un programme Python essaie de concaténer une chaîne avec un entier en utilisant l'opérateur +. Quelle erreur se produit?",
+    "msa": "برنامج بايثون يحاول دمج سلسلة نصية مع عدد صحيح باستخدام عملية الجمع +. ما هو الخطأ الذي يحدث؟",
+    "code_switched_tn": "3andi programme Python y7awel yrabb9 string m3a integer bel +. Chnouwa el erreur?",
+    "expected_answer": "TypeError"
+  },
+  {
+    "id": "debugging_008",
+    "domain": "debugging",
+    "english": "A recursive Python function has no base case and calls itself indefinitely. What error does Python raise?",
+    "french": "Une fonction récursive Python n'a pas de cas de base et s'appelle indéfiniment. Quelle erreur Python va-t-il lever?",
+    "msa": "دالة بايثون تكرارية ليس لديها حالة أساسية وتستدعي نفسها إلى الأبد. ما هو الخطأ الذي يرفعه بايثون؟",
+    "code_switched_tn": "3andi fonction récursive Python mafihasch base case w t3ayyet rassha lel abada. Chnouwa el erreur?",
+    "expected_answer": "RecursionError"
+  },
+  {
+    "id": "debugging_009",
+    "domain": "debugging",
+    "english": "A Python if statement uses a single = instead of == for comparison. What is the bug?",
+    "french": "Une instruction if en Python utilise un seul = au lieu de == pour la comparaison. Quel est le bug?",
+    "msa": "تعليمة if في بايثون تستخدم = مفردة بدلاً من == للمقارنة. ما هو الخطأ؟",
+    "code_switched_tn": "3andi instruction if fi Python testa3mel = wahda badal == lel comparaison. Chnouwa el bug?",
+    "expected_answer": "Assignment instead of comparison"
+  },
+  {
+    "id": "debugging_010",
+    "domain": "debugging",
+    "english": "A Python function body is not indented correctly. What error will Python raise?",
+    "french": "Le corps d'une fonction Python n'est pas correctement indenté. Quelle erreur Python va-t-il lever?",
+    "msa": "جسم دالة بايثون غير محاذٍ بشكل صحيح. ما هو الخطأ الذي سيرفعه بايثون؟",
+    "code_switched_tn": "3andi fonction Python machi mzalza9 behi. Chnouwa el erreur elli Python bch ycharah?",
+    "expected_answer": "IndentationError"
+  },
+  {
     "id": "networking_001",
     "domain": "networking",
-    "english": "What is the maximum number of host addresses in a /24 subnet?",
-    "french": "Quel est le nombre maximum d'adresses d'hôtes dans un sous-réseau /24?",
-    "msa": "ما هو الحد الأقصى لعدد عناوين المضيفين في شبكة فرعية /24؟",
+    "english": "What is the maximum number of usable host addresses in a /24 subnet?",
+    "french": "Quel est le nombre maximum d'adresses d'hôtes utilisables dans un sous-réseau /24?",
+    "msa": "ما هو الحد الأقصى لعدد عناوين المضيفين القابلة للاستخدام في شبكة فرعية /24؟",
     "code_switched_tn": "Qaddech el nombre max mta3 host addresses fi subnet /24?",
     "expected_answer": "254"
+  },
+  {
+    "id": "networking_002",
+    "domain": "networking",
+    "english": "What is the subnet mask of a /24 network?",
+    "french": "Quel est le masque de sous-réseau d'un réseau /24?",
+    "msa": "ما هو قناع الشبكة لشبكة /24؟",
+    "code_switched_tn": "Chnouwa el masque mta3 réseau /24?",
+    "expected_answer": "255.255.255.0"
+  },
+  {
+    "id": "networking_003",
+    "domain": "networking",
+    "english": "How many usable host addresses are in a /16 subnet?",
+    "french": "Combien d'adresses d'hôtes utilisables y a-t-il dans un sous-réseau /16?",
+    "msa": "كم عدد عناوين المضيفين القابلة للاستخدام في شبكة فرعية /16؟",
+    "code_switched_tn": "Qaddech host addresses fi subnet /16?",
+    "expected_answer": "65534"
+  },
+  {
+    "id": "networking_004",
+    "domain": "networking",
+    "english": "What is the default port number for HTTP?",
+    "french": "Quel est le numéro de port par défaut pour HTTP?",
+    "msa": "ما هو رقم المنفذ الافتراضي لبروتوكول HTTP؟",
+    "code_switched_tn": "Chnouwa el port par défaut mta3 HTTP?",
+    "expected_answer": "80"
+  },
+  {
+    "id": "networking_005",
+    "domain": "networking",
+    "english": "What is the default port number for HTTPS?",
+    "french": "Quel est le numéro de port par défaut pour HTTPS?",
+    "msa": "ما هو رقم المنفذ الافتراضي لبروتوكول HTTPS؟",
+    "code_switched_tn": "Chnouwa el port par défaut mta3 HTTPS?",
+    "expected_answer": "443"
+  },
+  {
+    "id": "networking_006",
+    "domain": "networking",
+    "english": "How many layers does the OSI model have?",
+    "french": "Combien de couches le modèle OSI possède-t-il?",
+    "msa": "كم عدد طبقات نموذج OSI؟",
+    "code_switched_tn": "Qaddech couches fi modèle OSI?",
+    "expected_answer": "7"
+  },
+  {
+    "id": "networking_007",
+    "domain": "networking",
+    "english": "What is the IPv4 loopback address?",
+    "french": "Quelle est l'adresse de bouclage IPv4?",
+    "msa": "ما هو عنوان الاسترجاع في IPv4؟",
+    "code_switched_tn": "Chnouwa el loopback address fi IPv4?",
+    "expected_answer": "127.0.0.1"
+  },
+  {
+    "id": "networking_008",
+    "domain": "networking",
+    "english": "How many usable host addresses are in a /30 subnet?",
+    "french": "Combien d'adresses d'hôtes utilisables y a-t-il dans un sous-réseau /30?",
+    "msa": "كم عدد عناوين المضيفين القابلة للاستخدام في شبكة فرعية /30؟",
+    "code_switched_tn": "Qaddech host addresses fi subnet /30?",
+    "expected_answer": "2"
+  },
+  {
+    "id": "networking_009",
+    "domain": "networking",
+    "english": "How many bits are in an IPv4 address?",
+    "french": "Combien de bits y a-t-il dans une adresse IPv4?",
+    "msa": "كم عدد البتات في عنوان IPv4؟",
+    "code_switched_tn": "Qaddech bits fi adresse IPv4?",
+    "expected_answer": "32"
+  },
+  {
+    "id": "networking_010",
+    "domain": "networking",
+    "english": "How many usable host addresses are in a /25 subnet?",
+    "french": "Combien d'adresses d'hôtes utilisables y a-t-il dans un sous-réseau /25?",
+    "msa": "كم عدد عناوين المضيفين القابلة للاستخدام في شبكة فرعية /25؟",
+    "code_switched_tn": "Qaddech host addresses fi subnet /25?",
+    "expected_answer": "126"
   },
   {
     "id": "physics_001",
@@ -72,5 +522,86 @@
     "msa": "جسم يسقط من حالة سكون ويهبط لمدة 3 ثوان. ما هي سرعته لحظة ارتطامه بالأرض؟ (g = 10 م/ث²)",
     "code_switched_tn": "Objet yetlah mel repos w yoq3 3 secondes. Qaddech vitesse ta3ha juste avant ma yousel lel sol? (g = 10 m/s²)",
     "expected_answer": "30 m/s"
+  },
+  {
+    "id": "physics_002",
+    "domain": "physics",
+    "english": "An object of mass 4 kg moves at a velocity of 3 m/s. What is its kinetic energy?",
+    "french": "Un objet de masse 4 kg se déplace à une vitesse de 3 m/s. Quelle est son énergie cinétique?",
+    "msa": "جسم كتلته 4 كيلوغرام يتحرك بسرعة 3 م/ث. ما هي طاقته الحركية؟",
+    "code_switched_tn": "3andi objet, kteltu 4 kg w vitesse ta3hu 3 m/s. Qaddech el énergie cinétique ta3hu?",
+    "expected_answer": "18J"
+  },
+  {
+    "id": "physics_003",
+    "domain": "physics",
+    "english": "A net force is applied to a mass of 5 kg, producing an acceleration of 4 m/s². What is the force?",
+    "french": "Une force nette est appliquée à une masse de 5 kg, produisant une accélération de 4 m/s². Quelle est la force?",
+    "msa": "قوة محصلة تؤثر على كتلة 5 كيلوغرام فتعطيها تسارعاً قدره 4 م/ث². ما مقدار هذه القوة؟",
+    "code_switched_tn": "3andi force tit3amel fi masse 5 kg w ta3tiha accélération 4 m/s². Qaddech el force?",
+    "expected_answer": "20N"
+  },
+  {
+    "id": "physics_004",
+    "domain": "physics",
+    "english": "An object falls freely from rest for 4 seconds. How far does it fall? (g = 10 m/s²)",
+    "french": "Un objet tombe librement depuis le repos pendant 4 secondes. Quelle distance parcourt-il? (g = 10 m/s²)",
+    "msa": "جسم يسقط حراً من حالة سكون لمدة 4 ثوان. ما هي المسافة التي يقطعها؟ (g = 10 م/ث²)",
+    "code_switched_tn": "Objet yetlah mel repos w yoq3 4 secondes. Qaddech el distance elli 3adé? (g = 10 m/s²)",
+    "expected_answer": "80m"
+  },
+  {
+    "id": "physics_005",
+    "domain": "physics",
+    "english": "A force of 10 newtons is applied over a distance of 5 meters. What is the work done?",
+    "french": "Une force de 10 newtons est appliquée sur une distance de 5 mètres. Quel est le travail effectué?",
+    "msa": "قوة قدرها 10 نيوتن تؤثر على مسافة 5 أمتار. ما هو الشغل المبذول؟",
+    "code_switched_tn": "3andi force 10 newtons ta3mel 3la distance 5 mètres. Qaddech el travail?",
+    "expected_answer": "50J"
+  },
+  {
+    "id": "physics_006",
+    "domain": "physics",
+    "english": "An object travels 120 meters in 4 seconds. What is its average velocity?",
+    "french": "Un objet parcourt 120 mètres en 4 secondes. Quelle est sa vitesse moyenne?",
+    "msa": "جسم يقطع 120 متراً في 4 ثوان. ما هي سرعته المتوسطة؟",
+    "code_switched_tn": "Objet 3ada 120 mètres fi 4 secondes. Qaddech el vitesse moyenne ta3hu?",
+    "expected_answer": "30 m/s"
+  },
+  {
+    "id": "physics_007",
+    "domain": "physics",
+    "english": "An object of mass 3 kg moves at 6 m/s. What is its momentum?",
+    "french": "Un objet de masse 3 kg se déplace à 6 m/s. Quelle est sa quantité de mouvement?",
+    "msa": "جسم كتلته 3 كيلوغرام يتحرك بسرعة 6 م/ث. ما هي كميته الحركية؟",
+    "code_switched_tn": "3andi objet, kteltu 3 kg w vitesse 6 m/s. Qaddech el quantité de mouvement mta3hu?",
+    "expected_answer": "18 kg·m/s"
+  },
+  {
+    "id": "physics_008",
+    "domain": "physics",
+    "english": "An object is dropped from rest and falls for 5 seconds. What is its velocity just before hitting the ground? (g = 10 m/s²)",
+    "french": "Un objet est lâché depuis le repos et tombe pendant 5 secondes. Quelle est sa vitesse juste avant d'atteindre le sol? (g = 10 m/s²)",
+    "msa": "جسم يسقط من حالة سكون لمدة 5 ثوان. ما هي سرعته لحظة ارتطامه بالأرض؟ (g = 10 م/ث²)",
+    "code_switched_tn": "Objet yetlah mel repos w yoq3 5 secondes. Qaddech vitesse ta3hu juste avant ma yousel lel sol? (g = 10 m/s²)",
+    "expected_answer": "50 m/s"
+  },
+  {
+    "id": "physics_009",
+    "domain": "physics",
+    "english": "A wave has a frequency of 25 Hz. What is its period?",
+    "french": "Une onde a une fréquence de 25 Hz. Quelle est sa période?",
+    "msa": "موجة تردد اهتزازاتها 25 هرتز. ما هي دورتها الزمنية؟",
+    "code_switched_tn": "3andi onde, fréquence ta3ha 25 Hz. Qaddech el période?",
+    "expected_answer": "0.04s"
+  },
+  {
+    "id": "physics_010",
+    "domain": "physics",
+    "english": "A force of 200 newtons is applied uniformly over an area of 4 square meters. What is the pressure?",
+    "french": "Une force de 200 newtons est appliquée uniformément sur une surface de 4 mètres carrés. Quelle est la pression?",
+    "msa": "قوة مقدارها 200 نيوتن تؤثر بشكل منتظم على مساحة 4 أمتار مربعة. ما هو الضغط؟",
+    "code_switched_tn": "3andi force 200 newtons t3amel bel tanasob 3la surface 4 mètres carrés. Qaddech el pression?",
+    "expected_answer": "50 Pa"
   }
 ]
