@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual Environment
+.venv/
+env/
+venv/
+ENV/
+
+# Data & Model weights
+data/control_benchmarks/
+data/tunswitch_transcripts.csv
+data/tunisia_tech_filtered.csv
+*.pt
+*.bin
+*.safetensors
+
+# HuggingFace & Torch cache
+.cache/
+hf_cache/
+
+# Results (optional: keep or ignore)
+results/raw_outputs.csv
+
+# IDE & OS
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store

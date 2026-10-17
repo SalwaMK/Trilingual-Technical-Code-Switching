@@ -4,13 +4,26 @@ load_models.py
 Reusable utilities for loading HuggingFace causal language models and
 generating text responses, used across the Tunisian trilingual
 code-switching evaluation project.
+
+Supports two backends:
+  - "huggingface" : downloads weights via transformers / HF Hub (requires GPU)
+  - "ollama"      : calls a locally running Ollama server via HTTP
+                    (no download needed beyond what Ollama already has)
 """
 
+import json
 import logging
+import re
+import urllib.error
+import urllib.request
 import warnings
 
-import torch
-from transformers import AutoModelForCausalLM, AutoTokenizer
+try:
+    import torch
+    from transformers import AutoModelForCausalLM, AutoTokenizer
+    _HF_AVAILABLE = True
+except ImportError:  # pragma: no cover
+    _HF_AVAILABLE = False
 
 logger = logging.getLogger(__name__)
 
@@ -83,7 +96,8 @@ def load_model(model_id: str, cache_dir: str | None = None):
     # -- Diagnostics ---------------------------------------------------------
     n_params_B = sum(p.numel() for p in model.parameters()) / 1e9
     print(f"[load_model] model_id   : {model_id}")
-    print(f"[load_model] device_map : {model.hf_device_map}")
+    device_info = getattr(model, "hf_device_map", getattr(model, "device", "unknown"))
+    print(f"[load_model] device_map : {device_info}")
     print(f"[load_model] parameters : {n_params_B:.2f}B")
 
     return model, tokenizer

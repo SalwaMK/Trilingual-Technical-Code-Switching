@@ -14,7 +14,11 @@ accelerate>=0.30.0          # needed for device_map="auto" in load_model()
 #   pip install torch --index-url https://download.pytorch.org/whl/cu121
 
 # ── Data handling ──────────────────────────────────────────────────────────
+numpy>=1.24.0
 pandas>=2.0.0
+
+# ── Visualisation ──────────────────────────────────────────────────────────
+matplotlib>=3.7.0           # required for scripts/analyze.py
 
 # ── Notebook support (optional) ────────────────────────────────────────────
 jupyter>=1.0.0

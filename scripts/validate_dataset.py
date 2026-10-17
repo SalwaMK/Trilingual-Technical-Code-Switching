@@ -83,8 +83,8 @@ def main() -> None:
     )
     parser.add_argument(
         "--path",
-        default=str(PROJECT_ROOT / "data" / "core_problems_template.json"),
-        help="Path to the JSON file to validate (default: data/core_problems_template.json)",
+        default=str(PROJECT_ROOT / "data" / "core_problems.json"),
+        help="Path to the JSON file to validate (default: data/core_problems.json)",
     )
     args = parser.parse_args()
 

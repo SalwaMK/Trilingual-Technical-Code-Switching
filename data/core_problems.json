@@ -1,0 +1,76 @@
+[
+  {
+    "_schema": {
+      "id": "string — unique identifier, e.g. 'circuits_001'",
+      "domain": "string — one of: circuits, debugging, math, physics, algorithms, networking",
+      "english": "string — problem statement in English",
+      "french": "string — problem statement in French (standard)",
+      "msa": "string — problem statement in Modern Standard Arabic",
+      "code_switched_tn": "string — problem in Tunisian trilingual code-switching (Fr + Derja + Eng) — fill manually",
+      "expected_answer": "string — the correct answer (must be identical across all four language versions)"
+    }
+  },
+  {
+    "id": "circuits_001",
+    "domain": "circuits",
+    "english": "A circuit has a resistance of 10 ohms and a current of 2 amperes flowing through it. What is the voltage across the resistor?",
+    "french": "Un circuit a une résistance de 10 ohms et un courant de 2 ampères qui le traverse. Quelle est la tension aux bornes de la résistance?",
+    "msa": "دائرة كهربائية تحتوي على مقاومة 10 أوم ويسري خلالها تيار شدته 2 أمبير. ما هو الجهد الكهربائي عبر المقاومة؟",
+    "code_switched_tn": "3andi circuit avec une résistance de 10 ohms w current ta3ha 2 ampères. Qaddech el voltage 3la el résistance?",
+    "expected_answer": "20V"
+  },
+  {
+    "id": "circuits_002",
+    "domain": "circuits",
+    "english": "Two resistors of 4 ohms and 6 ohms are connected in series. What is the total resistance?",
+    "french": "Deux résistances de 4 ohms et 6 ohms sont connectées en série. Quelle est la résistance totale?",
+    "msa": "مقاومتان قيمتاهما 4 أوم و6 أوم متصلتان على التوالي. ما هي المقاومة الكلية؟",
+    "code_switched_tn": "3andi deux résistances — wahda 4 ohms w l'autre 6 ohms — mwaslén en série. Qaddech el résistance totale?",
+    "expected_answer": "10 ohms"
+  },
+  {
+    "id": "math_001",
+    "domain": "math",
+    "english": "What is the derivative of f(x) = x^2 + 3x + 5?",
+    "french": "Quelle est la dérivée de f(x) = x^2 + 3x + 5?",
+    "msa": "ما هو مشتق الدالة f(x) = x^2 + 3x + 5؟",
+    "code_switched_tn": "Chnouwa el dérivée mta3 f(x) = x^2 + 3x + 5?",
+    "expected_answer": "f'(x) = 2x + 3"
+  },
+  {
+    "id": "algorithms_001",
+    "domain": "algorithms",
+    "english": "What is the time complexity of binary search on a sorted array of n elements?",
+    "french": "Quelle est la complexité temporelle de la recherche binaire sur un tableau trié de n éléments?",
+    "msa": "ما هو تعقيد الوقت لخوارزمية البحث الثنائي على مصفوفة مرتبة من n عنصر؟",
+    "code_switched_tn": "Chnouwa el time complexity mta3 binary search fi sorted array fih n elements?",
+    "expected_answer": "O(log n)"
+  },
+  {
+    "id": "debugging_001",
+    "domain": "debugging",
+    "english": "A Python function returns None instead of the expected integer. The function computes a sum but the return statement is missing. What is the bug?",
+    "french": "Une fonction Python retourne None au lieu de l'entier attendu. La fonction calcule une somme mais l'instruction return est manquante. Quel est le bug?",
+    "msa": "ترجع دالة بايثون القيمة None بدلاً من العدد الصحيح المتوقع. تحسب الدالة مجموعاً لكن تعليمة الإرجاع مفقودة. ما هو الخطأ البرمجي؟",
+    "code_switched_tn": "3andi fonction Python torja3 None badal el integer eli ykhdam. El fonction tcalculi somme mé el return statement manquant. Chnouwa el bug?",
+    "expected_answer": "Missing return statement"
+  },
+  {
+    "id": "networking_001",
+    "domain": "networking",
+    "english": "What is the maximum number of host addresses in a /24 subnet?",
+    "french": "Quel est le nombre maximum d'adresses d'hôtes dans un sous-réseau /24?",
+    "msa": "ما هو الحد الأقصى لعدد عناوين المضيفين في شبكة فرعية /24؟",
+    "code_switched_tn": "Qaddech el nombre max mta3 host addresses fi subnet /24?",
+    "expected_answer": "254"
+  },
+  {
+    "id": "physics_001",
+    "domain": "physics",
+    "english": "An object is dropped from rest and falls for 3 seconds. What is its velocity just before hitting the ground? (g = 10 m/s²)",
+    "french": "Un objet est lâché depuis le repos et tombe pendant 3 secondes. Quelle est sa vitesse juste avant de toucher le sol? (g = 10 m/s²)",
+    "msa": "جسم يسقط من حالة سكون ويهبط لمدة 3 ثوان. ما هي سرعته لحظة ارتطامه بالأرض؟ (g = 10 م/ث²)",
+    "code_switched_tn": "Objet yetlah mel repos w yoq3 3 secondes. Qaddech vitesse ta3ha juste avant ma yousel lel sol? (g = 10 m/s²)",
+    "expected_answer": "30 m/s"
+  }
+]

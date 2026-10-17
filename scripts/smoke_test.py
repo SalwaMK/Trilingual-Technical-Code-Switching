@@ -41,7 +41,7 @@ from load_models import MODEL_CONFIGS, generate_response, load_model_by_name  # 
 
 TEST_PROMPT = (
     "3andi circuit avec une résistance de 10 ohms w current ta3ha 2 ampères. "
-    "Ich will calculate el voltage. "
+    "Nbaghi ncalculi el voltage. "
     "Aide-moi bch nfhem: kifesh nstaamel Ohm's law hna?"
 )
 
