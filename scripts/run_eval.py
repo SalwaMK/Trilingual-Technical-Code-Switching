@@ -4,27 +4,30 @@ run_eval.py
 Evaluation runner for the Trilingual Technical Code-Switching benchmark.
 
 For each problem in data/core_problems.json, runs all 4 language conditions
-(english, french, msa, code_switched_tn) through all 3 registered models,
-and saves raw outputs to results/raw_outputs.csv.
+(english, french, msa, code_switched_tn) through the selected models and
+saves raw outputs to results/raw_outputs.csv.
 
 Features
 --------
-- Resumable: rows already present in raw_outputs.csv are skipped, so you can
-  safely re-run after adding more problems or if the run is interrupted.
-- --limit N: evaluate only the first N problems (for quick smoke tests).
-- --models: comma-separated list of model keys to run (default: all).
-- --conditions: comma-separated list of language conditions (default: all).
+- Three backends: hf_api (default), huggingface (local GPU), ollama (local server)
+- Resumable: already-evaluated (problem_id, model, condition) triples are skipped.
+- --limit N: evaluate only the first N problems (quick smoke tests).
+- --models: comma-separated model keys (default: atlas,qwen_3b,jais).
+- --conditions: comma-separated language conditions (default: all four).
 
 Usage
 -----
-    # Full run
-    python scripts/run_eval.py
+    # Recommended: three primary HF API models, all problems
+    python scripts/run_eval.py --models atlas,qwen_3b,jais
 
-    # Quick 5-problem test
-    python scripts/run_eval.py --limit 5
+    # Quick 3-problem test
+    python scripts/run_eval.py --models atlas --limit 3
 
-    # One model, one condition
-    python scripts/run_eval.py --models qwen --conditions english,code_switched_tn
+    # Ollama models
+    python scripts/run_eval.py --models deepseek,qwen_coder,qwen_mini
+
+    # Local HF (requires GPU)
+    python scripts/run_eval.py --models atlas_local,qwen_local
 """
 
 import argparse
@@ -41,7 +44,21 @@ SCRIPTS_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = SCRIPTS_DIR.parent
 sys.path.insert(0, str(SCRIPTS_DIR))
 
-from load_models import MODEL_CONFIGS, generate_response, load_model_by_name  # noqa: E402
+from load_models import (  # noqa: E402
+    DEFAULT_MODELS,
+    HF_API_MODELS,
+    HF_LOCAL_MODELS,
+    MODEL_CONFIGS,
+    OLLAMA_MODELS,
+    check_ollama,
+    generate_response,
+    hf_api_generate,
+    is_hf_api,
+    is_hf_local,
+    is_ollama,
+    load_model_by_name,
+    ollama_generate,
+)
 
 # ---------------------------------------------------------------------------
 # Constants
@@ -130,6 +147,9 @@ def run_eval(
     """Iterate models → problems → conditions, generate responses, and persist."""
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 
+    # Check Ollama once if any Ollama model is requested
+    ollama_ok: bool | None = None
+
     for model_name in model_names:
         cfg = MODEL_CONFIGS[model_name]
         model_id = cfg["model_id"]
@@ -143,23 +163,42 @@ def run_eval(
         ]
 
         if not needed:
-            print(f"\n[{model_name}] All rows already present — skipping model load.")
+            print(f"\n[{model_name}] All rows already present — skipping.")
             continue
 
+        backend = cfg["backend"]
+        backend_tag = {"hf_api": "[HF API]", "huggingface": "[HF local]", "ollama": "[Ollama]"}.get(backend, "")
+
         print(f"\n{'=' * 70}")
-        print(f"Model : {model_name}  ({model_id})")
+        print(f"Model : {model_name}  ({model_id})  {backend_tag}")
         print(f"Tasks : {len(needed)} prompt(s) to generate")
         print("=" * 70)
 
-        # Load model --------------------------------------------------------
-        try:
-            model, tokenizer = load_model_by_name(model_name)
-        except Exception as exc:
-            print(f"[ERROR] Could not load '{model_name}': {exc}")
-            print("        Skipping this model.")
-            continue
+        model, tokenizer = None, None
 
-        # Generate ----------------------------------------------------------
+        # ── Ollama pre-flight ────────────────────────────────────────────────
+        if is_ollama(model_name):
+            if ollama_ok is None:
+                ollama_ok = check_ollama()
+            if not ollama_ok:
+                print("[ERROR] Ollama server not reachable. Start it with: ollama serve")
+                print("        Skipping this model.")
+                continue
+            ollama_name = cfg["ollama_name"]
+
+        # ── HuggingFace local: load weights into memory ──────────────────────
+        elif is_hf_local(model_name):
+            try:
+                model, tokenizer = load_model_by_name(model_name)
+            except Exception as exc:
+                print(f"[ERROR] Could not load '{model_name}': {exc}")
+                print("        Skipping this model.")
+                continue
+
+        # ── HF API: nothing to load (just HTTP calls) ────────────────────────
+        # else: is_hf_api(model_name) — no setup needed
+
+        # ── Generate ─────────────────────────────────────────────────────────
         batch: list[dict] = []
 
         for prob, cond in needed:
@@ -176,7 +215,12 @@ def run_eval(
 
             print(f"  [{model_name}] {pid} / {cond} … ", end="", flush=True)
             try:
-                response = generate_response(model, tokenizer, full_prompt)
+                if is_ollama(model_name):
+                    response = ollama_generate(ollama_name, full_prompt)
+                elif is_hf_local(model_name):
+                    response = generate_response(model, tokenizer, full_prompt)
+                else:  # hf_api
+                    response = hf_api_generate(model_id, full_prompt)
                 print("done")
             except Exception as exc:
                 response = f"[GENERATION_ERROR: {exc}]"
@@ -192,7 +236,6 @@ def run_eval(
                 "expected_answer": expected,
             })
 
-            # Mark as done so the outer resume set stays consistent
             done.add((pid, model_name, cond))
 
             # Flush every 10 rows to protect against interruption
@@ -203,15 +246,15 @@ def run_eval(
         # Final flush
         append_rows(batch, OUTPUT_PATH)
 
-        # Free GPU memory ---------------------------------------------------
-        try:
-            import torch  # noqa: PLC0415
-            del model
-            del tokenizer
-            if torch.cuda.is_available():
-                torch.cuda.empty_cache()
-        except Exception:
-            pass
+        # ── Free GPU memory (local HF only) ───────────────────────────────────
+        if is_hf_local(model_name) and model is not None:
+            try:
+                import torch  # noqa: PLC0415
+                del model, tokenizer
+                if torch.cuda.is_available():
+                    torch.cuda.empty_cache()
+            except Exception:
+                pass
 
         print(f"[{model_name}] Done. Results appended to {OUTPUT_PATH.relative_to(PROJECT_ROOT)}")
 
@@ -236,12 +279,14 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--models",
         type=str,
-        default=",".join(MODEL_CONFIGS.keys()),
+        default=",".join(DEFAULT_MODELS),
         metavar="KEYS",
         help=(
             f"Comma-separated model keys to evaluate. "
-            f"Available: {', '.join(MODEL_CONFIGS.keys())}. "
-            f"Default: all."
+            f"HF local (default): {', '.join(HF_LOCAL_MODELS)}. "
+            f"HF API: {', '.join(HF_API_MODELS)}. "
+            f"Ollama: {', '.join(OLLAMA_MODELS)}. "
+            f"Default: {','.join(DEFAULT_MODELS)}."
         ),
     )
     parser.add_argument(

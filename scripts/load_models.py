@@ -1,18 +1,29 @@
 """
 load_models.py
 --------------
-Reusable utilities for loading HuggingFace causal language models and
-generating text responses, used across the Tunisian trilingual
+Reusable utilities for model inference across the Tunisian trilingual
 code-switching evaluation project.
 
-Supports two backends:
-  - "huggingface" : downloads weights via transformers / HF Hub (requires GPU)
-  - "ollama"      : calls a locally running Ollama server via HTTP
-                    (no download needed beyond what Ollama already has)
+Three backends
+--------------
+  "huggingface" : Downloads weights from HF Hub, runs locally via
+                  transformers on GPU (device_map="auto").
+                  ✓ Works with ANY HF model.  Requires a CUDA GPU.
+                  → Primary recommendation for this project.
+
+  "hf_api"      : Calls HuggingFace's own inference servers via
+                  InferenceClient(provider="hf-inference").
+                  Works only for popular models HF has deployed on TGI.
+                  Requires an HF token (export HF_TOKEN=hf_...).
+                  → Useful as a no-download fallback for supported models.
+
+  "ollama"      : Calls a locally running Ollama server via HTTP.
+                  → Use for models you already have in Ollama.
 """
 
 import json
 import logging
+import os
 import re
 import urllib.error
 import urllib.request
@@ -28,63 +39,183 @@ except ImportError:  # pragma: no cover
 logger = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
-# Model registry
+# Ollama configuration
 # ---------------------------------------------------------------------------
 
+OLLAMA_BASE_URL = "http://localhost:11434"
+
+# Strip DeepSeek-R1 chain-of-thought blocks before scoring
+_THINK_RE = re.compile(r"<think>.*?</think>", re.DOTALL)
+
+
+# ---------------------------------------------------------------------------
+# Model registry
+# ---------------------------------------------------------------------------
+# Each entry:
+#   model_id   — HF repo path  OR  Ollama tag
+#   backend    — "huggingface" | "hf_api" | "ollama"
+#   params     — human-readable size
+#   description
+#   expected_languages
+#
+# For "ollama" also set:
+#   ollama_name — exact tag from `ollama list`
+
 MODEL_CONFIGS = {
+
+    # ── HuggingFace local (primary recommendation) ─────────────────────────
+    # Downloaded on first run (~2–8 GB each), cached in ~/.cache/huggingface.
+    # Runs locally via transformers on your GPU.  Works 100% reliably.
+    #
+    # Ranked by multilingual quality for Ar / Fr / En code-switching:
+
     "atlas": {
         "model_id": "MBZUAI-Paris/Atlas-Chat-2B",
-        "description": "Arabic-French-English trilingual chat model (2B), MBZUAI Paris",
+        "params": "2B",
+        "description": "Atlas-Chat (2B) — purpose-built for Arabic + French + English",
         "expected_languages": ["ar", "fr", "en"],
+        "backend": "huggingface",
     },
-    "qwen": {
+    "qwen_3b": {
         "model_id": "Qwen/Qwen2.5-3B-Instruct",
-        "description": "Qwen2.5 instruction-tuned (3B), multilingual",
+        "params": "3B",
+        "description": "Qwen2.5-Instruct (3B) — strong multilingual (En/Ar/Fr/Zh)",
         "expected_languages": ["zh", "en", "ar", "fr"],
+        "backend": "huggingface",
     },
     "jais": {
         "model_id": "inceptionai/jais-family-2p7b-chat",
-        "description": "Jais family Arabic-English chat model (2.7B), Inception AI",
+        "params": "2.7B",
+        "description": "Jais-family-2.7B-chat — Arabic + English, Inception AI",
         "expected_languages": ["ar", "en"],
+        "backend": "huggingface",
+    },
+    "phi": {
+        "model_id": "microsoft/Phi-3.5-mini-instruct",
+        "params": "3.8B",
+        "description": "Phi-3.5-mini-instruct (3.8B) — decent multilingual, Microsoft",
+        "expected_languages": ["en", "ar", "fr"],
+        "backend": "huggingface",
+    },
+    "qwen_15b": {
+        "model_id": "Qwen/Qwen2.5-1.5B-Instruct",
+        "params": "1.5B",
+        "description": "Qwen2.5-Instruct (1.5B) — compact multilingual",
+        "expected_languages": ["zh", "en", "ar", "fr"],
+        "backend": "huggingface",
+    },
+    "qwen_05b": {
+        "model_id": "Qwen/Qwen2.5-0.5B-Instruct",
+        "params": "0.5B",
+        "description": "Qwen2.5-Instruct (0.5B) — tiny baseline",
+        "expected_languages": ["zh", "en"],
+        "backend": "huggingface",
+    },
+
+    # ── HuggingFace Inference API (optional, limited model support) ─────────
+    # Uses HF's own servers (provider="hf-inference").
+    # Only popular models that HF has deployed on TGI work here.
+    # Niche models (Atlas, Jais) are NOT available — use local instead.
+    # Requires: export HF_TOKEN=hf_xxxxxxxxxxxxxxxxxxxx
+
+    "qwen_3b_api": {
+        "model_id": "Qwen/Qwen2.5-3B-Instruct",
+        "params": "3B",
+        "description": "Qwen2.5-Instruct (3B) via HF Inference API (no download)",
+        "expected_languages": ["zh", "en", "ar", "fr"],
+        "backend": "hf_api",
+    },
+    "phi_api": {
+        "model_id": "microsoft/Phi-3.5-mini-instruct",
+        "params": "3.8B",
+        "description": "Phi-3.5-mini-instruct (3.8B) via HF Inference API (no download)",
+        "expected_languages": ["en", "ar", "fr"],
+        "backend": "hf_api",
+    },
+
+    # ── Ollama (locally served, already on your machine) ───────────────────
+
+    "deepseek": {
+        "model_id": "deepseek-r1:14b",
+        "ollama_name": "deepseek-r1:14b",
+        "params": "14B",
+        "description": "DeepSeek-R1 (14B) via Ollama — reasoning model, <think> stripped",
+        "expected_languages": ["en", "zh", "ar", "fr"],
+        "backend": "ollama",
+    },
+    "qwen_coder": {
+        "model_id": "qwen2.5-coder:14b",
+        "ollama_name": "qwen2.5-coder:14b",
+        "params": "14B",
+        "description": "Qwen2.5-Coder (14B) via Ollama — strongest on coding domains",
+        "expected_languages": ["en", "zh"],
+        "backend": "ollama",
+    },
+    "qwen_mini": {
+        "model_id": "qwen2.5-coder:1.5b",
+        "ollama_name": "qwen2.5-coder:1.5b",
+        "params": "1.5B",
+        "description": "Qwen2.5-Coder (1.5B) via Ollama — fast, lightweight",
+        "expected_languages": ["en", "zh"],
+        "backend": "ollama",
     },
 }
 
+# Convenience groupings
+HF_LOCAL_MODELS = [k for k, v in MODEL_CONFIGS.items() if v["backend"] == "huggingface"]
+HF_API_MODELS   = [k for k, v in MODEL_CONFIGS.items() if v["backend"] == "hf_api"]
+OLLAMA_MODELS   = [k for k, v in MODEL_CONFIGS.items() if v["backend"] == "ollama"]
+
+# Default: three best multilingual HF models (local, 0.3B–6B range)
+DEFAULT_MODELS = ["atlas", "qwen_3b", "jais"]
+
 
 # ---------------------------------------------------------------------------
-# Core loading function
+# Backend helpers
+# ---------------------------------------------------------------------------
+
+def get_backend(name: str) -> str:
+    return MODEL_CONFIGS.get(name, {}).get("backend", "")
+
+def is_hf_local(name: str) -> bool:
+    return get_backend(name) == "huggingface"
+
+def is_hf_api(name: str) -> bool:
+    return get_backend(name) == "hf_api"
+
+def is_ollama(name: str) -> bool:
+    return get_backend(name) == "ollama"
+
+
+# ---------------------------------------------------------------------------
+# HuggingFace local backend
 # ---------------------------------------------------------------------------
 
 def load_model(model_id: str, cache_dir: str | None = None):
-    """Load a HuggingFace causal LM tokenizer and model.
+    """Download (if needed) and load a HF causal LM onto the local GPU.
 
     Parameters
     ----------
     model_id:
-        HuggingFace Hub model identifier (e.g. ``"Qwen/Qwen2.5-3B-Instruct"``).
+        HuggingFace Hub identifier, e.g. ``"Qwen/Qwen2.5-3B-Instruct"``.
     cache_dir:
-        Optional local directory used by the HuggingFace cache.  When *None*
-        the default HF cache location is used.
+        Optional override for the HF cache directory.
 
     Returns
     -------
     tuple[AutoModelForCausalLM, AutoTokenizer]
-        The loaded model (in eval mode) and its tokenizer.
     """
-    # -- Tokenizer -----------------------------------------------------------
-    tokenizer = AutoTokenizer.from_pretrained(
-        model_id,
-        cache_dir=cache_dir,
-    )
+    if not _HF_AVAILABLE:
+        raise RuntimeError(
+            "transformers and torch must be installed for the 'huggingface' backend.\n"
+            "  pip install transformers torch"
+        )
 
-    # Decoder-only models should pad on the left so that the rightmost token
-    # of every sequence in a batch is always the last real input token.
+    tokenizer = AutoTokenizer.from_pretrained(model_id, cache_dir=cache_dir)
     tokenizer.padding_side = "left"
-
-    # Many causal LMs lack an explicit pad token; reuse EOS instead.
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
 
-    # -- Model ---------------------------------------------------------------
     model = AutoModelForCausalLM.from_pretrained(
         model_id,
         torch_dtype=torch.float16,
@@ -93,19 +224,12 @@ def load_model(model_id: str, cache_dir: str | None = None):
     )
     model.eval()
 
-    # -- Diagnostics ---------------------------------------------------------
-    n_params_B = sum(p.numel() for p in model.parameters()) / 1e9
-    print(f"[load_model] model_id   : {model_id}")
+    n_params = sum(p.numel() for p in model.parameters()) / 1e9
     device_info = getattr(model, "hf_device_map", getattr(model, "device", "unknown"))
-    print(f"[load_model] device_map : {device_info}")
-    print(f"[load_model] parameters : {n_params_B:.2f}B")
+    print(f"[load_model] {model_id}  |  {n_params:.2f}B params  |  device: {device_info}")
 
     return model, tokenizer
 
-
-# ---------------------------------------------------------------------------
-# Generation helper
-# ---------------------------------------------------------------------------
 
 def generate_response(
     model,
@@ -115,53 +239,27 @@ def generate_response(
     temperature: float = 0.1,
     do_sample: bool = True,
 ) -> str:
-    """Generate a text response for *prompt* using *model* and *tokenizer*.
+    """Run inference with a locally loaded HF model.
 
-    The function applies the model's chat template when available, falling
-    back to a simple ``<|user|> / <|assistant|>`` wrapper otherwise.
-
-    Parameters
-    ----------
-    model:
-        A loaded ``AutoModelForCausalLM`` in eval mode.
-    tokenizer:
-        The matching ``AutoTokenizer``.
-    prompt:
-        Raw user-facing text (no special tokens needed).
-    max_new_tokens:
-        Maximum number of tokens to generate beyond the prompt.
-    temperature:
-        Sampling temperature; lower values make output more deterministic.
-    do_sample:
-        Whether to use sampling (``True``) or greedy decoding (``False``).
-
-    Returns
-    -------
-    str
-        The decoded generated text, stripped of leading/trailing whitespace.
-        Only the *newly generated* tokens are returned — the echoed prompt is
-        excluded.
+    Applies the model's chat template when available; falls back to a generic
+    ``<|user|>/<|assistant|>`` wrapper.  Returns only the newly generated
+    tokens — the prompt is excluded from the output.
     """
     messages = [{"role": "user", "content": prompt}]
 
-    # Try the model-specific chat template first.
     try:
         formatted = tokenizer.apply_chat_template(
-            messages,
-            tokenize=False,
-            add_generation_prompt=True,
+            messages, tokenize=False, add_generation_prompt=True,
         )
     except Exception as exc:  # noqa: BLE001
         warnings.warn(
-            f"apply_chat_template failed ({exc!r}); "
-            "falling back to generic <|user|>/<|assistant|> wrapper.",
+            f"apply_chat_template failed ({exc!r}); using generic wrapper.",
             stacklevel=2,
         )
         formatted = f"<|user|>\n{prompt}\n<|assistant|>\n"
 
-    # Tokenise and move to the same device as the model.
     inputs = tokenizer(formatted, return_tensors="pt")
-    input_ids = inputs["input_ids"].to(model.device)
+    input_ids      = inputs["input_ids"].to(model.device)
     attention_mask = inputs["attention_mask"].to(model.device)
 
     with torch.no_grad():
@@ -175,42 +273,127 @@ def generate_response(
             eos_token_id=tokenizer.eos_token_id,
         )
 
-    # output_ids shape: [1, input_seq_len + new_tokens]
-    # Slice off the echoed prompt so we return only the new tokens.
-    new_token_ids = output_ids[0][input_ids.shape[1]:]
-    response = tokenizer.decode(new_token_ids, skip_special_tokens=True)
+    new_ids = output_ids[0][input_ids.shape[1]:]
+    return tokenizer.decode(new_ids, skip_special_tokens=True).strip()
 
-    return response.strip()
-
-
-# ---------------------------------------------------------------------------
-# Convenience wrapper
-# ---------------------------------------------------------------------------
 
 def load_model_by_name(name: str, cache_dir: str | None = None):
-    """Look up *name* in :data:`MODEL_CONFIGS` and call :func:`load_model`.
+    """Load *name* from MODEL_CONFIGS.
 
-    Parameters
-    ----------
-    name:
-        A key in ``MODEL_CONFIGS`` (e.g. ``"atlas"``, ``"qwen"``, ``"jais"``).
-    cache_dir:
-        Forwarded to :func:`load_model`.
-
-    Returns
-    -------
-    tuple[AutoModelForCausalLM, AutoTokenizer]
-
-    Raises
-    ------
-    ValueError
-        If *name* is not a key in ``MODEL_CONFIGS``.
+    Returns ``(model, tokenizer)`` for ``huggingface`` backend;
+    ``(None, None)`` for ``hf_api`` and ``ollama`` (those backends don't
+    need a loaded model object).
     """
     if name not in MODEL_CONFIGS:
         valid = ", ".join(f'"{k}"' for k in MODEL_CONFIGS)
-        raise ValueError(
-            f"Unknown model name {name!r}. Valid options are: {valid}."
-        )
+        raise ValueError(f"Unknown model '{name}'. Valid keys: {valid}")
 
-    model_id = MODEL_CONFIGS[name]["model_id"]
-    return load_model(model_id, cache_dir=cache_dir)
+    if not is_hf_local(name):
+        return None, None
+
+    return load_model(MODEL_CONFIGS[name]["model_id"], cache_dir=cache_dir)
+
+
+# ---------------------------------------------------------------------------
+# HuggingFace Inference API backend
+# ---------------------------------------------------------------------------
+
+def hf_api_generate(
+    model_id: str,
+    prompt: str,
+    max_new_tokens: int = 300,
+    temperature: float = 0.1,
+    token: str | None = None,
+) -> str:
+    """Call HF's own inference servers (provider='hf-inference').
+
+    Only models that HF has deployed on their TGI infrastructure are
+    supported.  Niche or low-traffic models will return a 404 / 503.
+    For those, use the local 'huggingface' backend instead.
+
+    Requires an HF token: ``export HF_TOKEN=hf_...``
+    """
+    try:
+        from huggingface_hub import InferenceClient  # noqa: PLC0415
+    except ImportError as exc:
+        raise RuntimeError(
+            "huggingface_hub is required.  pip install huggingface_hub"
+        ) from exc
+
+    hf_token = (
+        token
+        or os.environ.get("HF_TOKEN")
+        or os.environ.get("HUGGING_FACE_HUB_TOKEN")
+    )
+
+    # provider="hf-inference" routes to HF's own TGI servers, not the
+    # third-party provider router (Together AI, Fireworks, etc.) that
+    # requires paid subscriptions or provider-specific enablement.
+    client = InferenceClient(
+        provider="hf-inference",
+        api_key=hf_token,
+    )
+
+    try:
+        response = client.chat_completion(
+            model=model_id,
+            messages=[{"role": "user", "content": prompt}],
+            max_tokens=max_new_tokens,
+            temperature=temperature,
+        )
+        return response.choices[0].message.content.strip()
+    except Exception as exc:
+        raise RuntimeError(
+            f"HF Inference API failed for '{model_id}': {exc}\n"
+            "This model may not be available on HF's serverless servers.\n"
+            "Switch to the local 'huggingface' backend instead:\n"
+            "  python scripts/run_eval.py --models atlas,qwen_3b,jais"
+        ) from exc
+
+
+# ---------------------------------------------------------------------------
+# Ollama backend
+# ---------------------------------------------------------------------------
+
+def check_ollama() -> bool:
+    """Return True if the Ollama server is reachable."""
+    try:
+        with urllib.request.urlopen(f"{OLLAMA_BASE_URL}/api/tags", timeout=5):
+            return True
+    except Exception:
+        return False
+
+
+def ollama_generate(
+    ollama_name: str,
+    prompt: str,
+    max_tokens: int = 300,
+    temperature: float = 0.1,
+) -> str:
+    """Send *prompt* to a locally running Ollama model.
+
+    DeepSeek-R1 ``<think>...</think>`` blocks are stripped automatically.
+    """
+    payload = json.dumps({
+        "model": ollama_name,
+        "messages": [{"role": "user", "content": prompt}],
+        "stream": False,
+        "options": {"temperature": temperature, "num_predict": max_tokens},
+    }).encode("utf-8")
+
+    req = urllib.request.Request(
+        f"{OLLAMA_BASE_URL}/api/chat",
+        data=payload,
+        headers={"Content-Type": "application/json"},
+        method="POST",
+    )
+
+    try:
+        with urllib.request.urlopen(req, timeout=180) as resp:
+            result = json.loads(resp.read().decode("utf-8"))
+    except urllib.error.URLError as exc:
+        raise RuntimeError(
+            f"Cannot reach Ollama at {OLLAMA_BASE_URL}. Run: ollama serve"
+        ) from exc
+
+    return _THINK_RE.sub("", result["message"]["content"]).strip()

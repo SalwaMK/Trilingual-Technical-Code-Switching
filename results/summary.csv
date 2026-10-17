@@ -1,0 +1,5 @@
+condition,atlas,qwen,qwen_3b
+english,0.714,0.4,0.429
+french,0.714,0.4,0.429
+msa,0.286,0.4,0.429
+code_switched_tn,0.571,0.4,0.429
