@@ -278,16 +278,19 @@ def generate_response(
     input_ids      = inputs["input_ids"].to(model.device)
     attention_mask = inputs["attention_mask"].to(model.device)
 
+    generation_kwargs = {
+        "attention_mask": attention_mask,
+        "max_new_tokens": max_new_tokens,
+        "do_sample": do_sample,
+        "pad_token_id": tokenizer.eos_token_id,
+        "eos_token_id": tokenizer.eos_token_id,
+    }
+    # Transformers warns that temperature is meaningless when sampling is off.
+    if do_sample:
+        generation_kwargs["temperature"] = temperature
+
     with torch.no_grad():
-        output_ids = model.generate(
-            input_ids,
-            attention_mask=attention_mask,
-            max_new_tokens=max_new_tokens,
-            temperature=temperature,
-            do_sample=do_sample,
-            pad_token_id=tokenizer.eos_token_id,
-            eos_token_id=tokenizer.eos_token_id,
-        )
+        output_ids = model.generate(input_ids, **generation_kwargs)
 
     new_ids = output_ids[0][input_ids.shape[1]:]
     return tokenizer.decode(new_ids, skip_special_tokens=True).strip()

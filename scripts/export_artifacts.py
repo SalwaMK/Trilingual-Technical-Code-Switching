@@ -40,7 +40,9 @@ def main() -> None:
         "parameter_count": "TODO: record from the loaded model",
         "note": "Do not call Atlas a Tunisian model; its model card describes Moroccan Arabic/Darija.",
     }
-    (meta / "model_config.json").write_text(json.dumps(model_config, indent=2) + "\n", encoding="utf-8")
+    model_path = meta / "model_config.json"
+    if not model_path.exists():
+        model_path.write_text(json.dumps(model_config, indent=2) + "\n", encoding="utf-8")
 
     run_config = {
         "created_at_utc": datetime.now(timezone.utc).isoformat(),

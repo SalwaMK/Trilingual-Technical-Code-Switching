@@ -1,8 +1,8 @@
 """Check that an evaluation result file is a complete model × condition matrix.
 
 Usage:
-    python scripts/check_results.py --input results/raw_outputs.csv
-    python scripts/check_results.py --input results/raw_outputs.csv --models qwen_3b
+    python scripts/check_results.py --input results/final_raw_outputs.csv
+    python scripts/check_results.py --input results/final_raw_outputs.csv --models qwen_3b
 """
 
 import argparse

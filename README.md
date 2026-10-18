@@ -68,6 +68,7 @@ python scripts/run_eval.py --models qwen_3b --temperature 0 --max-new-tokens 64 
 python scripts/check_results.py --input results/final_raw_outputs.csv --models qwen_3b
 python scripts/score_results.py --input results/final_raw_outputs.csv
 python scripts/analyze.py
+python scripts/export_artifacts.py
 ```
 
 For a local GPU run, install `requirements.txt` and authenticate with Hugging
@@ -75,7 +76,7 @@ Face if required. Colab users should run `notebooks/evaluation.ipynb`; it
 installs dependencies, loads the model, records metadata, evaluates all
 conditions, scores outputs, and saves figures.
 
-The runner writes `results/raw_outputs.csv`, `results/run_metadata.json`,
+The runner writes `results/final_raw_outputs.csv`, `results/run_metadata.json`,
 `results/scored_results.csv`, `results/summary.csv`, and
 `results/accuracy_by_condition.png`.
 
@@ -93,9 +94,12 @@ accuracy and human-reviewed semantic accuracy. The key comparison is:
 code-switch penalty = accuracy(code_switched_tn) - accuracy(english)
 ```
 
-The final notebook should also report results by domain, answer type, switch
-location, Arabizi density, and error category, with confidence intervals and
-raw response examples.
+The notebook additionally reports dataset statistics, GPU/environment
+information, model revision metadata, domain-level accuracy, bootstrap
+confidence intervals, the code-switch penalty, a manual-review queue, and raw
+response examples. The current dataset does not yet contain answer-type,
+switch-location, or Arabizi-density fields; those analyses become available
+after the annotation template is completed.
 
 ## Proposed path forward
 
@@ -116,9 +120,10 @@ README.md
 dataset/evaluation.jsonl
 dataset/dataset_card.md
 notebooks/evaluation.ipynb
-results/raw_outputs.csv
+results/final_raw_outputs.csv
 results/scored_results.csv
 results/summary.csv
+results/manual_review_queue.csv
 results/figures/
 metadata/model_config.json
 metadata/run_config.json
