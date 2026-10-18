@@ -9,16 +9,16 @@ saves raw outputs to results/raw_outputs.csv.
 
 Features
 --------
-- Three backends: hf_api (default), huggingface (local GPU), ollama (local server)
+- Three backends: hf_api, huggingface (local GPU), ollama (local server)
 - Resumable: already-evaluated (problem_id, model, condition) triples are skipped.
 - --limit N: evaluate only the first N problems (quick smoke tests).
-- --models: comma-separated model keys (default: atlas,qwen_3b,jais).
+- --models: comma-separated model keys (default: qwen_3b).
 - --conditions: comma-separated language conditions (default: all four).
 
 Usage
 -----
-    # Recommended: three primary HF API models, all problems
-    python scripts/run_eval.py --models atlas,qwen_3b,jais
+    # Recommended: one primary local HF model, all problems
+    python scripts/run_eval.py --models qwen_3b
 
     # Quick 3-problem test
     python scripts/run_eval.py --models atlas --limit 3
@@ -32,7 +32,9 @@ Usage
 
 import argparse
 import json
+import platform
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 import pandas as pd
@@ -58,6 +60,7 @@ from load_models import (  # noqa: E402
     is_ollama,
     load_model_by_name,
     ollama_generate,
+    is_challenge_eligible,
 )
 
 # ---------------------------------------------------------------------------
@@ -66,6 +69,7 @@ from load_models import (  # noqa: E402
 DATA_PATH = PROJECT_ROOT / "data" / "core_problems.json"
 RESULTS_DIR = PROJECT_ROOT / "results"
 OUTPUT_PATH = RESULTS_DIR / "raw_outputs.csv"
+METADATA_PATH = RESULTS_DIR / "run_metadata.json"
 
 LANGUAGE_CONDITIONS = ["english", "french", "msa", "code_switched_tn"]
 
@@ -134,6 +138,15 @@ def append_rows(rows: list[dict], path: Path) -> None:
     df_new.to_csv(path, mode="a", header=write_header, index=False)
 
 
+def _package_version(name: str) -> str | None:
+    """Return an installed package version without making it a hard dependency."""
+    try:
+        from importlib.metadata import version
+        return version(name)
+    except Exception:
+        return None
+
+
 # ---------------------------------------------------------------------------
 # Core evaluation loop
 # ---------------------------------------------------------------------------
@@ -143,6 +156,9 @@ def run_eval(
     model_names: list[str],
     conditions: list[str],
     done: set[tuple[str, str, str]],
+    output_path: Path = OUTPUT_PATH,
+    temperature: float = 0.0,
+    max_new_tokens: int = 64,
 ) -> None:
     """Iterate models → problems → conditions, generate responses, and persist."""
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
@@ -216,11 +232,24 @@ def run_eval(
             print(f"  [{model_name}] {pid} / {cond} … ", end="", flush=True)
             try:
                 if is_ollama(model_name):
-                    response = ollama_generate(ollama_name, full_prompt)
+                    response = ollama_generate(
+                        ollama_name, full_prompt,
+                        max_tokens=max_new_tokens,
+                        temperature=temperature,
+                    )
                 elif is_hf_local(model_name):
-                    response = generate_response(model, tokenizer, full_prompt)
+                    response = generate_response(
+                        model, tokenizer, full_prompt,
+                        max_new_tokens=max_new_tokens,
+                        temperature=temperature,
+                        do_sample=temperature > 0,
+                    )
                 else:  # hf_api
-                    response = hf_api_generate(model_id, full_prompt)
+                    response = hf_api_generate(
+                        model_id, full_prompt,
+                        max_new_tokens=max_new_tokens,
+                        temperature=temperature,
+                    )
                 print("done")
             except Exception as exc:
                 response = f"[GENERATION_ERROR: {exc}]"
@@ -240,11 +269,11 @@ def run_eval(
 
             # Flush every 10 rows to protect against interruption
             if len(batch) >= 10:
-                append_rows(batch, OUTPUT_PATH)
+                append_rows(batch, output_path)
                 batch = []
 
         # Final flush
-        append_rows(batch, OUTPUT_PATH)
+        append_rows(batch, output_path)
 
         # ── Free GPU memory (local HF only) ───────────────────────────────────
         if is_hf_local(model_name) and model is not None:
@@ -256,7 +285,7 @@ def run_eval(
             except Exception:
                 pass
 
-        print(f"[{model_name}] Done. Results appended to {OUTPUT_PATH.relative_to(PROJECT_ROOT)}")
+        print(f"[{model_name}] Done. Results appended to {output_path.relative_to(PROJECT_ROOT)}")
 
 
 # ---------------------------------------------------------------------------
@@ -300,6 +329,18 @@ def parse_args() -> argparse.Namespace:
             f"Default: all."
         ),
     )
+    parser.add_argument(
+        "--temperature", type=float, default=0.0,
+        help="Generation temperature. Default 0 for deterministic evaluation.",
+    )
+    parser.add_argument(
+        "--max-new-tokens", type=int, default=64,
+        help="Maximum generated tokens. Default: 64.",
+    )
+    parser.add_argument(
+        "--output", default=str(OUTPUT_PATH),
+        help="Raw output CSV path. Use a new path for a clean final run.",
+    )
     return parser.parse_args()
 
 
@@ -312,6 +353,14 @@ def main() -> None:
     if invalid_models:
         print(f"[ERROR] Unknown model key(s): {invalid_models}")
         print(f"        Valid keys: {list(MODEL_CONFIGS.keys())}")
+        sys.exit(1)
+
+    ineligible = [m for m in requested_models if not is_challenge_eligible(m)]
+    if ineligible:
+        print(
+            f"[ERROR] Models outside the challenge's 0.6B–6B range: {ineligible}. "
+            "Use an eligible model for the headline evaluation."
+        )
         sys.exit(1)
 
     # Validate conditions
@@ -339,23 +388,48 @@ def main() -> None:
     print(f"Dataset   : {DATA_PATH.relative_to(PROJECT_ROOT)}  ({len(problems)} problems)")
     print(f"Models    : {requested_models}")
     print(f"Conditions: {requested_conditions}")
-    print(f"Output    : {OUTPUT_PATH.relative_to(PROJECT_ROOT)}")
+    output_path = Path(args.output)
+    if not output_path.is_absolute():
+        output_path = PROJECT_ROOT / output_path
+    print(f"Output    : {output_path.relative_to(PROJECT_ROOT)}")
+    print(f"Generation: temperature={args.temperature}, max_new_tokens={args.max_new_tokens}")
     print("=" * 70)
 
-    done = load_existing_results(OUTPUT_PATH)
+    done = load_existing_results(output_path)
 
     run_eval(
         problems=problems,
         model_names=requested_models,
         conditions=requested_conditions,
         done=done,
+        output_path=output_path,
+        temperature=args.temperature,
+        max_new_tokens=args.max_new_tokens,
     )
 
+    metadata = {
+        "created_at_utc": datetime.now(timezone.utc).isoformat(),
+        "dataset": str(DATA_PATH.relative_to(PROJECT_ROOT)),
+        "problem_count": len(problems),
+        "models": [MODEL_CONFIGS[m]["model_id"] for m in requested_models],
+        "model_keys": requested_models,
+        "conditions": requested_conditions,
+        "temperature": args.temperature,
+        "max_new_tokens": args.max_new_tokens,
+        "python": platform.python_version(),
+        "platform": platform.platform(),
+        "transformers": _package_version("transformers"),
+        "torch": _package_version("torch"),
+    }
+    RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+    METADATA_PATH.write_text(json.dumps(metadata, indent=2) + "\n", encoding="utf-8")
+    print(f"Metadata  : {METADATA_PATH.relative_to(PROJECT_ROOT)}")
+
     # Final summary
-    if OUTPUT_PATH.exists():
-        df = pd.read_csv(OUTPUT_PATH)
+    if output_path.exists():
+        df = pd.read_csv(output_path)
         print(f"\n{'=' * 70}")
-        print(f"Finished. Total rows in {OUTPUT_PATH.name}: {len(df):,}")
+        print(f"Finished. Total rows in {output_path.name}: {len(df):,}")
         print(f"{'=' * 70}")
     else:
         print("\n[warn] No output file was created (all tasks may have been skipped).")

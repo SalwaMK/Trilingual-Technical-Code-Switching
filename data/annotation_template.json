@@ -1,0 +1,17 @@
+{
+  "id": "circuits_001",
+  "difficulty": "TODO: easy|medium|hard",
+  "answer_type": "TODO: numeric_with_unit|equation|complexity|diagnosis|other",
+  "switch_points": [
+    "TODO: discourse|technical_term|operator|variable|question|other"
+  ],
+  "arabizi_density": "TODO: number between 0 and 1",
+  "language_mix": ["tn_arabizi", "french", "english"],
+  "native_review": {
+    "reviewer_id": "TODO: anonymized reviewer identifier",
+    "naturalness": "TODO: 1-5",
+    "meaning_equivalent": "TODO: true|false",
+    "technical_correctness": "TODO: true|false",
+    "notes": "TODO"
+  }
+}

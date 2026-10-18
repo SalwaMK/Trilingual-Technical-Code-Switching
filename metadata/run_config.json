@@ -1,0 +1,13 @@
+{
+  "created_at_utc": "2026-10-18T09:35:40.189639+00:00",
+  "temperature": 0.0,
+  "do_sample": false,
+  "max_new_tokens": 64,
+  "conditions": [
+    "english",
+    "french",
+    "msa",
+    "code_switched_tn"
+  ],
+  "human_review_completed": false
+}

@@ -23,7 +23,8 @@ data/tunisia_tech_filtered.csv
 .cache/
 hf_cache/
 
-# Results (optional: keep or ignore)
+# Results: keep final evaluation artifacts under version control/publication
+# (large exploratory runs should still be stored in the Hugging Face artifact.)
 results/raw_outputs.csv
 
 # IDE & OS

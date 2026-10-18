@@ -1,4 +1,4 @@
-problem_id,domain,model,condition,prompt_text,model_response,expected_answer,score
+problem_id,domain,model,condition,prompt_text,model_response,expected_answer,score,match_type
 math_001,math,atlas,msa,ما هو مشتق الدالة f(x) = x^2 + 3x + 5؟,"2
 Answer: 2
 Step-by-step explanation:
@@ -21,7 +21,7 @@ or f'(x) = 2x + 3
 or f'(x) = 2x + 3
 or f'(x) = 2x + 3
 or f'(x) = 2x + 3
-or f'(x) = 2x + 3",f'(x) = 2x + 3,correct
+or f'(x) = 2x + 3",f'(x) = 2x + 3,correct,standalone_normalized
 math_001,math,atlas,code_switched_tn,Chnouwa el dérivée mta3 f(x) = x^2 + 3x + 5?,"f'(x) = 2x + 3
 
 
@@ -143,7 +143,7 @@ math_001,math,atlas,code_switched_tn,Chnouwa el dérivée mta3 f(x) = x^2 + 3x +
 |
 |
 |
-|",f'(x) = 2x + 3,correct
+|",f'(x) = 2x + 3,correct,standalone_normalized
 algorithms_001,algorithms,atlas,english,What is the time complexity of binary search on a sorted array of n elements?,"20V
 
 Binary search on a sorted array of n elements has a time complexity of O(log n).
@@ -225,7 +225,7 @@ Binary search on a sorted array of n elements has a time complexity of O(log n).
 |
 |
 |
-|",O(log n),correct
+|",O(log n),correct,standalone_normalized
 algorithms_001,algorithms,atlas,french,Quelle est la complexité temporelle de la recherche binaire sur un tableau trié de n éléments?,"O(log n)
 
 *Note: O(log n) est le terme de notation de la complexité temporelle pour la recherche binaire sur un tableau trié de n éléments.
@@ -237,7 +237,7 @@ algorithms_001,algorithms,atlas,french,Quelle est la complexité temporelle de l
 *Note: O(log n) est le terme de notation de la complexité temporelle pour la recherche binaire sur un tableau trié de n éléments.
 *Note: O(log n) est le terme de notation de la complexité temporelle pour la recherche binaire sur un tableau trié de n éléments.
 *Note: O(log n) est le terme de notation de la complexité temporelle pour la recherche binaire sur un tableau trié de n éléments.
-*Note: O(log n) est",O(log n),correct
+*Note: O(log n) est",O(log n),correct,standalone_normalized
 algorithms_001,algorithms,atlas,msa,ما هو تعقيد الوقت لخوارزمية البحث الثنائي على مصفوفة مرتبة من n عنصر؟,"2V
 
 *2V*
@@ -264,7 +264,7 @@ algorithms_001,algorithms,atlas,msa,ما هو تعقيد الوقت لخوارز
 تعقيد الوقت لخوارزمية البحث الثنائي على مصفوفة مرتبة من n عنصر هو 2n.
 2n
 2n
-تعقيد الوقت لخوارزمية البحث الثنائي على مصفوفة مرت",O(log n),incorrect
+تعقيد الوقت لخوارزمية البحث الثنائي على مصفوفة مرت",O(log n),incorrect,no_match
 algorithms_001,algorithms,atlas,code_switched_tn,Chnouwa el time complexity mta3 binary search fi sorted array fih n elements?,"20V
 
 Binary search is an efficient algorithm for finding a target value in a sorted array. Its time complexity is O(log n), where n is the number of elements in the array.
@@ -352,7 +352,7 @@ Time Complexity: O(log n)
 |
 |
 |
-|",O(log n),correct
+|",O(log n),correct,standalone_normalized
 debugging_001,debugging,atlas,english,A Python function returns None instead of the expected integer. The function computes a sum but the return statement is missing. What is the bug?,"missing return statement
 
 ```python
@@ -409,7 +409,7 @@ def add_numbers(a, b):
 ```
 ```python
 def add_numbers(a, b):
-    c = a + b",Missing return statement,correct
+    c = a + b",Missing return statement,correct,standalone_normalized
 debugging_001,debugging,atlas,french,Une fonction Python retourne None au lieu de l'entier attendu. La fonction calcule une somme mais l'instruction return est manquante. Quel est le bug?,"missing return statement
 
 ```python
@@ -470,7 +470,7 @@ def add(a, b):
 ```
 ```python
 def add(a, b):
-    return",Missing return statement,correct
+    return",Missing return statement,correct,standalone_normalized
 debugging_001,debugging,atlas,msa,ترجع دالة بايثون القيمة None بدلاً من العدد الصحيح المتوقع. تحسب الدالة مجموعاً لكن تعليمة الإرجاع مفقودة. ما هو الخطأ البرمجي؟,"'None'
 None
 
@@ -549,7 +549,7 @@ print(add(1, 2))
 ```
 ```
 None
-```",Missing return statement,incorrect
+```",Missing return statement,incorrect,no_match
 debugging_001,debugging,atlas,code_switched_tn,3andi fonction Pythonترجع None badal el integer eli ykhdam. El fonction tcalculi somme mé el return statement manquant. Chnouwa el bug?,"3andi fonction Pythonترجع None badal el integer eli ykhdam. El fonction tcalculi somme mé el return statement manquant. Chnouwa el bug?
 ```python
 def add_numbers(a, b):
@@ -598,88 +598,88 @@ def add_numbers(a, b):
 ```python
 def add_numbers(a, b):
     return a + b
-```",Missing return statement,incorrect
-circuits_001,circuits,qwen,english,A circuit has a resistance of 10 ohms and a current of 2 amperes flowing through it. What is the voltage across the resistor?,20V,20V,correct
-circuits_001,circuits,qwen,french,Un circuit a une résistance de 10 ohms et un courant de 2 ampères qui le traverse. Quelle est la tension aux bornes de la résistance?,20V,20V,correct
-circuits_001,circuits,qwen,msa,دائرة كهربائية تحتوي على مقاومة 10 أوم ويسري خلالها تيار شدته 2 أمبير. ما هو الجهد الكهربائي عبر المقاومة؟,20V,20V,correct
-circuits_001,circuits,qwen,code_switched_tn,3andi circuit avec une résistance de 10 ohms w current ta3ha 2 ampères. Qaddech el voltage 3la el résistance?,20V,20V,correct
-circuits_002,circuits,qwen,english,Two resistors of 4 ohms and 6 ohms are connected in series. What is the total resistance?,20Ω,10 ohms,incorrect
-circuits_002,circuits,qwen,french,Deux résistances de 4 ohms et 6 ohms sont connectées en série. Quelle est la résistance totale?,20Ω,10 ohms,incorrect
-circuits_002,circuits,qwen,msa,مقاومتان قيمتاهما 4 أوم و6 أوم متصلتان على التوالي. ما هي المقاومة الكلية؟,18Ω,10 ohms,incorrect
-circuits_002,circuits,qwen,code_switched_tn,3andi deux résistances — wahda 4 ohms w l'autre 6 ohms — mwaslén en série. Qaddech el résistance totale?,10,10 ohms,incorrect
-math_001,math,qwen,english,What is the derivative of f(x) = x^2 + 3x + 5?,4x + 3,f'(x) = 2x + 3,incorrect
-math_001,math,qwen,french,Quelle est la dérivée de f(x) = x^2 + 3x + 5?,4x + 3,f'(x) = 2x + 3,incorrect
-math_001,math,qwen,msa,ما هو مشتق الدالة f(x) = x^2 + 3x + 5؟,4x + 3,f'(x) = 2x + 3,incorrect
-math_001,math,qwen,code_switched_tn,Chnouwa el dérivée mta3 f(x) = x^2 + 3x + 5?,2x + 3,f'(x) = 2x + 3,incorrect
-algorithms_001,algorithms,qwen,english,What is the time complexity of binary search on a sorted array of n elements?,O(log n),O(log n),correct
-algorithms_001,algorithms,qwen,french,Quelle est la complexité temporelle de la recherche binaire sur un tableau trié de n éléments?,O(log n),O(log n),correct
-algorithms_001,algorithms,qwen,msa,ما هو تعقيد الوقت لخوارزمية البحث الثنائي على مصفوفة مرتبة من n عنصر؟,O(log n),O(log n),correct
-algorithms_001,algorithms,qwen,code_switched_tn,Chnouwa el time complexity mta3 binary search fi sorted array fih n elements?,O(log n),O(log n),correct
+```",Missing return statement,incorrect,no_match
+circuits_001,circuits,qwen,english,A circuit has a resistance of 10 ohms and a current of 2 amperes flowing through it. What is the voltage across the resistor?,20V,20V,correct,exact_or_standalone_normalized
+circuits_001,circuits,qwen,french,Un circuit a une résistance de 10 ohms et un courant de 2 ampères qui le traverse. Quelle est la tension aux bornes de la résistance?,20V,20V,correct,exact_or_standalone_normalized
+circuits_001,circuits,qwen,msa,دائرة كهربائية تحتوي على مقاومة 10 أوم ويسري خلالها تيار شدته 2 أمبير. ما هو الجهد الكهربائي عبر المقاومة؟,20V,20V,correct,exact_or_standalone_normalized
+circuits_001,circuits,qwen,code_switched_tn,3andi circuit avec une résistance de 10 ohms w current ta3ha 2 ampères. Qaddech el voltage 3la el résistance?,20V,20V,correct,exact_or_standalone_normalized
+circuits_002,circuits,qwen,english,Two resistors of 4 ohms and 6 ohms are connected in series. What is the total resistance?,20Ω,10 ohms,incorrect,no_match
+circuits_002,circuits,qwen,french,Deux résistances de 4 ohms et 6 ohms sont connectées en série. Quelle est la résistance totale?,20Ω,10 ohms,incorrect,no_match
+circuits_002,circuits,qwen,msa,مقاومتان قيمتاهما 4 أوم و6 أوم متصلتان على التوالي. ما هي المقاومة الكلية؟,18Ω,10 ohms,incorrect,no_match
+circuits_002,circuits,qwen,code_switched_tn,3andi deux résistances — wahda 4 ohms w l'autre 6 ohms — mwaslén en série. Qaddech el résistance totale?,10,10 ohms,incorrect,no_match
+math_001,math,qwen,english,What is the derivative of f(x) = x^2 + 3x + 5?,4x + 3,f'(x) = 2x + 3,incorrect,no_match
+math_001,math,qwen,french,Quelle est la dérivée de f(x) = x^2 + 3x + 5?,4x + 3,f'(x) = 2x + 3,incorrect,no_match
+math_001,math,qwen,msa,ما هو مشتق الدالة f(x) = x^2 + 3x + 5؟,4x + 3,f'(x) = 2x + 3,incorrect,no_match
+math_001,math,qwen,code_switched_tn,Chnouwa el dérivée mta3 f(x) = x^2 + 3x + 5?,2x + 3,f'(x) = 2x + 3,incorrect,no_match
+algorithms_001,algorithms,qwen,english,What is the time complexity of binary search on a sorted array of n elements?,O(log n),O(log n),correct,exact_or_standalone_normalized
+algorithms_001,algorithms,qwen,french,Quelle est la complexité temporelle de la recherche binaire sur un tableau trié de n éléments?,O(log n),O(log n),correct,exact_or_standalone_normalized
+algorithms_001,algorithms,qwen,msa,ما هو تعقيد الوقت لخوارزمية البحث الثنائي على مصفوفة مرتبة من n عنصر؟,O(log n),O(log n),correct,exact_or_standalone_normalized
+algorithms_001,algorithms,qwen,code_switched_tn,Chnouwa el time complexity mta3 binary search fi sorted array fih n elements?,O(log n),O(log n),correct,exact_or_standalone_normalized
 debugging_001,debugging,qwen,english,A Python function returns None instead of the expected integer. The function computes a sum but the return statement is missing. What is the bug?,"def compute_sum(numbers):
     total = 0
     for num in numbers:
         total += num
-    return total",Missing return statement,incorrect
-debugging_001,debugging,qwen,french,Une fonction Python retourne None au lieu de l'entier attendu. La fonction calcule une somme mais l'instruction return est manquante. Quel est le bug?,204,Missing return statement,incorrect
-debugging_001,debugging,qwen,msa,ترجع دالة بايثون القيمة None بدلاً من العدد الصحيح المتوقع. تحسب الدالة مجموعاً لكن تعليمة الإرجاع مفقودة. ما هو الخطأ البرمجي؟,IndexError,Missing return statement,incorrect
+    return total",Missing return statement,incorrect,no_match
+debugging_001,debugging,qwen,french,Une fonction Python retourne None au lieu de l'entier attendu. La fonction calcule une somme mais l'instruction return est manquante. Quel est le bug?,204,Missing return statement,incorrect,no_match
+debugging_001,debugging,qwen,msa,ترجع دالة بايثون القيمة None بدلاً من العدد الصحيح المتوقع. تحسب الدالة مجموعاً لكن تعليمة الإرجاع مفقودة. ما هو الخطأ البرمجي؟,IndexError,Missing return statement,incorrect,no_match
 debugging_001,debugging,qwen,code_switched_tn,3andi fonction Pythonترجع None badal el integer eli ykhdam. El fonction tcalculi somme mé el return statement manquant. Chnouwa el bug?,"def calculate_sum(n):
-    return sum(range(1, n+1))",Missing return statement,incorrect
-circuits_001,circuits,qwen_3b_api,english,A circuit has a resistance of 10 ohms and a current of 2 amperes flowing through it. What is the voltage across the resistor?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],20V,needs_manual_review
-circuits_001,circuits,qwen_3b_api,french,Un circuit a une résistance de 10 ohms et un courant de 2 ampères qui le traverse. Quelle est la tension aux bornes de la résistance?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],20V,needs_manual_review
-circuits_001,circuits,qwen_3b_api,msa,دائرة كهربائية تحتوي على مقاومة 10 أوم ويسري خلالها تيار شدته 2 أمبير. ما هو الجهد الكهربائي عبر المقاومة؟,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],20V,needs_manual_review
-circuits_001,circuits,qwen_3b_api,code_switched_tn,3andi circuit avec une résistance de 10 ohms w current ta3ha 2 ampères. Qaddech el voltage 3la el résistance?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],20V,needs_manual_review
-circuits_002,circuits,qwen_3b_api,english,Two resistors of 4 ohms and 6 ohms are connected in series. What is the total resistance?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],10 ohms,needs_manual_review
-circuits_002,circuits,qwen_3b_api,french,Deux résistances de 4 ohms et 6 ohms sont connectées en série. Quelle est la résistance totale?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],10 ohms,needs_manual_review
-circuits_002,circuits,qwen_3b_api,msa,مقاومتان قيمتاهما 4 أوم و6 أوم متصلتان على التوالي. ما هي المقاومة الكلية؟,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],10 ohms,needs_manual_review
-circuits_002,circuits,qwen_3b_api,code_switched_tn,3andi deux résistances — wahda 4 ohms w l'autre 6 ohms — mwaslén en série. Qaddech el résistance totale?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],10 ohms,needs_manual_review
-math_001,math,qwen_3b_api,english,What is the derivative of f(x) = x^2 + 3x + 5?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],f'(x) = 2x + 3,needs_manual_review
-math_001,math,qwen_3b_api,french,Quelle est la dérivée de f(x) = x^2 + 3x + 5?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],f'(x) = 2x + 3,needs_manual_review
-math_001,math,qwen_3b_api,msa,ما هو مشتق الدالة f(x) = x^2 + 3x + 5؟,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],f'(x) = 2x + 3,needs_manual_review
-math_001,math,qwen_3b_api,code_switched_tn,Chnouwa el dérivée mta3 f(x) = x^2 + 3x + 5?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],f'(x) = 2x + 3,needs_manual_review
-algorithms_001,algorithms,qwen_3b_api,english,What is the time complexity of binary search on a sorted array of n elements?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],O(log n),needs_manual_review
-algorithms_001,algorithms,qwen_3b_api,french,Quelle est la complexité temporelle de la recherche binaire sur un tableau trié de n éléments?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],O(log n),needs_manual_review
-algorithms_001,algorithms,qwen_3b_api,msa,ما هو تعقيد الوقت لخوارزمية البحث الثنائي على مصفوفة مرتبة من n عنصر؟,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],O(log n),needs_manual_review
-algorithms_001,algorithms,qwen_3b_api,code_switched_tn,Chnouwa el time complexity mta3 binary search fi sorted array fih n elements?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],O(log n),needs_manual_review
-debugging_001,debugging,qwen_3b_api,english,A Python function returns None instead of the expected integer. The function computes a sum but the return statement is missing. What is the bug?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],Missing return statement,needs_manual_review
-debugging_001,debugging,qwen_3b_api,french,Une fonction Python retourne None au lieu de l'entier attendu. La fonction calcule une somme mais l'instruction return est manquante. Quel est le bug?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],Missing return statement,needs_manual_review
-debugging_001,debugging,qwen_3b_api,msa,ترجع دالة بايثون القيمة None بدلاً من العدد الصحيح المتوقع. تحسب الدالة مجموعاً لكن تعليمة الإرجاع مفقودة. ما هو الخطأ البرمجي؟,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],Missing return statement,needs_manual_review
-debugging_001,debugging,qwen_3b_api,code_switched_tn,3andi fonction Python torja3 None badal el integer eli ykhdam. El fonction tcalculi somme mé el return statement manquant. Chnouwa el bug?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],Missing return statement,needs_manual_review
-networking_001,networking,qwen_3b_api,english,What is the maximum number of host addresses in a /24 subnet?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],254,needs_manual_review
-networking_001,networking,qwen_3b_api,french,Quel est le nombre maximum d'adresses d'hôtes dans un sous-réseau /24?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],254,needs_manual_review
-networking_001,networking,qwen_3b_api,msa,ما هو الحد الأقصى لعدد عناوين المضيفين في شبكة فرعية /24؟,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],254,needs_manual_review
-networking_001,networking,qwen_3b_api,code_switched_tn,Qaddech el nombre max mta3 host addresses fi subnet /24?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],254,needs_manual_review
-physics_001,physics,qwen_3b_api,english,An object is dropped from rest and falls for 3 seconds. What is its velocity just before hitting the ground? (g = 10 m/s²),[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],30 m/s,needs_manual_review
-physics_001,physics,qwen_3b_api,french,Un objet est lâché depuis le repos et tombe pendant 3 secondes. Quelle est sa vitesse juste avant de toucher le sol? (g = 10 m/s²),[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],30 m/s,needs_manual_review
-physics_001,physics,qwen_3b_api,msa,جسم يسقط من حالة سكون ويهبط لمدة 3 ثوان. ما هي سرعته لحظة ارتطامه بالأرض؟ (g = 10 م/ث²),[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],30 m/s,needs_manual_review
-physics_001,physics,qwen_3b_api,code_switched_tn,Objet yetlah mel repos w yoq3 3 secondes. Qaddech vitesse ta3ha juste avant ma yousel lel sol? (g = 10 m/s²),[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],30 m/s,needs_manual_review
-circuits_001,circuits,phi_api,english,A circuit has a resistance of 10 ohms and a current of 2 amperes flowing through it. What is the voltage across the resistor?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],20V,needs_manual_review
-circuits_001,circuits,phi_api,french,Un circuit a une résistance de 10 ohms et un courant de 2 ampères qui le traverse. Quelle est la tension aux bornes de la résistance?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],20V,needs_manual_review
-circuits_001,circuits,phi_api,msa,دائرة كهربائية تحتوي على مقاومة 10 أوم ويسري خلالها تيار شدته 2 أمبير. ما هو الجهد الكهربائي عبر المقاومة؟,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],20V,needs_manual_review
-circuits_001,circuits,phi_api,code_switched_tn,3andi circuit avec une résistance de 10 ohms w current ta3ha 2 ampères. Qaddech el voltage 3la el résistance?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],20V,needs_manual_review
-circuits_002,circuits,phi_api,english,Two resistors of 4 ohms and 6 ohms are connected in series. What is the total resistance?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],10 ohms,needs_manual_review
-circuits_002,circuits,phi_api,french,Deux résistances de 4 ohms et 6 ohms sont connectées en série. Quelle est la résistance totale?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],10 ohms,needs_manual_review
-circuits_002,circuits,phi_api,msa,مقاومتان قيمتاهما 4 أوم و6 أوم متصلتان على التوالي. ما هي المقاومة الكلية؟,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],10 ohms,needs_manual_review
-circuits_002,circuits,phi_api,code_switched_tn,3andi deux résistances — wahda 4 ohms w l'autre 6 ohms — mwaslén en série. Qaddech el résistance totale?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],10 ohms,needs_manual_review
-math_001,math,phi_api,english,What is the derivative of f(x) = x^2 + 3x + 5?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],f'(x) = 2x + 3,needs_manual_review
-math_001,math,phi_api,french,Quelle est la dérivée de f(x) = x^2 + 3x + 5?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],f'(x) = 2x + 3,needs_manual_review
-math_001,math,phi_api,msa,ما هو مشتق الدالة f(x) = x^2 + 3x + 5؟,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],f'(x) = 2x + 3,needs_manual_review
-math_001,math,phi_api,code_switched_tn,Chnouwa el dérivée mta3 f(x) = x^2 + 3x + 5?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],f'(x) = 2x + 3,needs_manual_review
-algorithms_001,algorithms,phi_api,english,What is the time complexity of binary search on a sorted array of n elements?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],O(log n),needs_manual_review
-algorithms_001,algorithms,phi_api,french,Quelle est la complexité temporelle de la recherche binaire sur un tableau trié de n éléments?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],O(log n),needs_manual_review
-algorithms_001,algorithms,phi_api,msa,ما هو تعقيد الوقت لخوارزمية البحث الثنائي على مصفوفة مرتبة من n عنصر؟,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],O(log n),needs_manual_review
-algorithms_001,algorithms,phi_api,code_switched_tn,Chnouwa el time complexity mta3 binary search fi sorted array fih n elements?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],O(log n),needs_manual_review
-debugging_001,debugging,phi_api,english,A Python function returns None instead of the expected integer. The function computes a sum but the return statement is missing. What is the bug?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],Missing return statement,needs_manual_review
-debugging_001,debugging,phi_api,french,Une fonction Python retourne None au lieu de l'entier attendu. La fonction calcule une somme mais l'instruction return est manquante. Quel est le bug?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],Missing return statement,needs_manual_review
-debugging_001,debugging,phi_api,msa,ترجع دالة بايثون القيمة None بدلاً من العدد الصحيح المتوقع. تحسب الدالة مجموعاً لكن تعليمة الإرجاع مفقودة. ما هو الخطأ البرمجي؟,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],Missing return statement,needs_manual_review
-debugging_001,debugging,phi_api,code_switched_tn,3andi fonction Python torja3 None badal el integer eli ykhdam. El fonction tcalculi somme mé el return statement manquant. Chnouwa el bug?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],Missing return statement,needs_manual_review
-networking_001,networking,phi_api,english,What is the maximum number of host addresses in a /24 subnet?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],254,needs_manual_review
-networking_001,networking,phi_api,french,Quel est le nombre maximum d'adresses d'hôtes dans un sous-réseau /24?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],254,needs_manual_review
-networking_001,networking,phi_api,msa,ما هو الحد الأقصى لعدد عناوين المضيفين في شبكة فرعية /24؟,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],254,needs_manual_review
-networking_001,networking,phi_api,code_switched_tn,Qaddech el nombre max mta3 host addresses fi subnet /24?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],254,needs_manual_review
-physics_001,physics,phi_api,english,An object is dropped from rest and falls for 3 seconds. What is its velocity just before hitting the ground? (g = 10 m/s²),[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],30 m/s,needs_manual_review
-physics_001,physics,phi_api,french,Un objet est lâché depuis le repos et tombe pendant 3 secondes. Quelle est sa vitesse juste avant de toucher le sol? (g = 10 m/s²),[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],30 m/s,needs_manual_review
-physics_001,physics,phi_api,msa,جسم يسقط من حالة سكون ويهبط لمدة 3 ثوان. ما هي سرعته لحظة ارتطامه بالأرض؟ (g = 10 م/ث²),[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],30 m/s,needs_manual_review
-physics_001,physics,phi_api,code_switched_tn,Objet yetlah mel repos w yoq3 3 secondes. Qaddech vitesse ta3ha juste avant ma yousel lel sol? (g = 10 m/s²),[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],30 m/s,needs_manual_review
+    return sum(range(1, n+1))",Missing return statement,incorrect,no_match
+circuits_001,circuits,qwen_3b_api,english,A circuit has a resistance of 10 ohms and a current of 2 amperes flowing through it. What is the voltage across the resistor?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],20V,needs_manual_review,manual_review
+circuits_001,circuits,qwen_3b_api,french,Un circuit a une résistance de 10 ohms et un courant de 2 ampères qui le traverse. Quelle est la tension aux bornes de la résistance?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],20V,needs_manual_review,manual_review
+circuits_001,circuits,qwen_3b_api,msa,دائرة كهربائية تحتوي على مقاومة 10 أوم ويسري خلالها تيار شدته 2 أمبير. ما هو الجهد الكهربائي عبر المقاومة؟,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],20V,needs_manual_review,manual_review
+circuits_001,circuits,qwen_3b_api,code_switched_tn,3andi circuit avec une résistance de 10 ohms w current ta3ha 2 ampères. Qaddech el voltage 3la el résistance?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],20V,needs_manual_review,manual_review
+circuits_002,circuits,qwen_3b_api,english,Two resistors of 4 ohms and 6 ohms are connected in series. What is the total resistance?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],10 ohms,needs_manual_review,manual_review
+circuits_002,circuits,qwen_3b_api,french,Deux résistances de 4 ohms et 6 ohms sont connectées en série. Quelle est la résistance totale?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],10 ohms,needs_manual_review,manual_review
+circuits_002,circuits,qwen_3b_api,msa,مقاومتان قيمتاهما 4 أوم و6 أوم متصلتان على التوالي. ما هي المقاومة الكلية؟,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],10 ohms,needs_manual_review,manual_review
+circuits_002,circuits,qwen_3b_api,code_switched_tn,3andi deux résistances — wahda 4 ohms w l'autre 6 ohms — mwaslén en série. Qaddech el résistance totale?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],10 ohms,needs_manual_review,manual_review
+math_001,math,qwen_3b_api,english,What is the derivative of f(x) = x^2 + 3x + 5?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],f'(x) = 2x + 3,needs_manual_review,manual_review
+math_001,math,qwen_3b_api,french,Quelle est la dérivée de f(x) = x^2 + 3x + 5?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],f'(x) = 2x + 3,needs_manual_review,manual_review
+math_001,math,qwen_3b_api,msa,ما هو مشتق الدالة f(x) = x^2 + 3x + 5؟,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],f'(x) = 2x + 3,needs_manual_review,manual_review
+math_001,math,qwen_3b_api,code_switched_tn,Chnouwa el dérivée mta3 f(x) = x^2 + 3x + 5?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],f'(x) = 2x + 3,needs_manual_review,manual_review
+algorithms_001,algorithms,qwen_3b_api,english,What is the time complexity of binary search on a sorted array of n elements?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],O(log n),needs_manual_review,manual_review
+algorithms_001,algorithms,qwen_3b_api,french,Quelle est la complexité temporelle de la recherche binaire sur un tableau trié de n éléments?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],O(log n),needs_manual_review,manual_review
+algorithms_001,algorithms,qwen_3b_api,msa,ما هو تعقيد الوقت لخوارزمية البحث الثنائي على مصفوفة مرتبة من n عنصر؟,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],O(log n),needs_manual_review,manual_review
+algorithms_001,algorithms,qwen_3b_api,code_switched_tn,Chnouwa el time complexity mta3 binary search fi sorted array fih n elements?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],O(log n),needs_manual_review,manual_review
+debugging_001,debugging,qwen_3b_api,english,A Python function returns None instead of the expected integer. The function computes a sum but the return statement is missing. What is the bug?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],Missing return statement,needs_manual_review,manual_review
+debugging_001,debugging,qwen_3b_api,french,Une fonction Python retourne None au lieu de l'entier attendu. La fonction calcule une somme mais l'instruction return est manquante. Quel est le bug?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],Missing return statement,needs_manual_review,manual_review
+debugging_001,debugging,qwen_3b_api,msa,ترجع دالة بايثون القيمة None بدلاً من العدد الصحيح المتوقع. تحسب الدالة مجموعاً لكن تعليمة الإرجاع مفقودة. ما هو الخطأ البرمجي؟,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],Missing return statement,needs_manual_review,manual_review
+debugging_001,debugging,qwen_3b_api,code_switched_tn,3andi fonction Python torja3 None badal el integer eli ykhdam. El fonction tcalculi somme mé el return statement manquant. Chnouwa el bug?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],Missing return statement,needs_manual_review,manual_review
+networking_001,networking,qwen_3b_api,english,What is the maximum number of host addresses in a /24 subnet?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],254,needs_manual_review,manual_review
+networking_001,networking,qwen_3b_api,french,Quel est le nombre maximum d'adresses d'hôtes dans un sous-réseau /24?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],254,needs_manual_review,manual_review
+networking_001,networking,qwen_3b_api,msa,ما هو الحد الأقصى لعدد عناوين المضيفين في شبكة فرعية /24؟,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],254,needs_manual_review,manual_review
+networking_001,networking,qwen_3b_api,code_switched_tn,Qaddech el nombre max mta3 host addresses fi subnet /24?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],254,needs_manual_review,manual_review
+physics_001,physics,qwen_3b_api,english,An object is dropped from rest and falls for 3 seconds. What is its velocity just before hitting the ground? (g = 10 m/s²),[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],30 m/s,needs_manual_review,manual_review
+physics_001,physics,qwen_3b_api,french,Un objet est lâché depuis le repos et tombe pendant 3 secondes. Quelle est sa vitesse juste avant de toucher le sol? (g = 10 m/s²),[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],30 m/s,needs_manual_review,manual_review
+physics_001,physics,qwen_3b_api,msa,جسم يسقط من حالة سكون ويهبط لمدة 3 ثوان. ما هي سرعته لحظة ارتطامه بالأرض؟ (g = 10 م/ث²),[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],30 m/s,needs_manual_review,manual_review
+physics_001,physics,qwen_3b_api,code_switched_tn,Objet yetlah mel repos w yoq3 3 secondes. Qaddech vitesse ta3ha juste avant ma yousel lel sol? (g = 10 m/s²),[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],30 m/s,needs_manual_review,manual_review
+circuits_001,circuits,phi_api,english,A circuit has a resistance of 10 ohms and a current of 2 amperes flowing through it. What is the voltage across the resistor?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],20V,needs_manual_review,manual_review
+circuits_001,circuits,phi_api,french,Un circuit a une résistance de 10 ohms et un courant de 2 ampères qui le traverse. Quelle est la tension aux bornes de la résistance?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],20V,needs_manual_review,manual_review
+circuits_001,circuits,phi_api,msa,دائرة كهربائية تحتوي على مقاومة 10 أوم ويسري خلالها تيار شدته 2 أمبير. ما هو الجهد الكهربائي عبر المقاومة؟,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],20V,needs_manual_review,manual_review
+circuits_001,circuits,phi_api,code_switched_tn,3andi circuit avec une résistance de 10 ohms w current ta3ha 2 ampères. Qaddech el voltage 3la el résistance?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],20V,needs_manual_review,manual_review
+circuits_002,circuits,phi_api,english,Two resistors of 4 ohms and 6 ohms are connected in series. What is the total resistance?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],10 ohms,needs_manual_review,manual_review
+circuits_002,circuits,phi_api,french,Deux résistances de 4 ohms et 6 ohms sont connectées en série. Quelle est la résistance totale?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],10 ohms,needs_manual_review,manual_review
+circuits_002,circuits,phi_api,msa,مقاومتان قيمتاهما 4 أوم و6 أوم متصلتان على التوالي. ما هي المقاومة الكلية؟,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],10 ohms,needs_manual_review,manual_review
+circuits_002,circuits,phi_api,code_switched_tn,3andi deux résistances — wahda 4 ohms w l'autre 6 ohms — mwaslén en série. Qaddech el résistance totale?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],10 ohms,needs_manual_review,manual_review
+math_001,math,phi_api,english,What is the derivative of f(x) = x^2 + 3x + 5?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],f'(x) = 2x + 3,needs_manual_review,manual_review
+math_001,math,phi_api,french,Quelle est la dérivée de f(x) = x^2 + 3x + 5?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],f'(x) = 2x + 3,needs_manual_review,manual_review
+math_001,math,phi_api,msa,ما هو مشتق الدالة f(x) = x^2 + 3x + 5؟,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],f'(x) = 2x + 3,needs_manual_review,manual_review
+math_001,math,phi_api,code_switched_tn,Chnouwa el dérivée mta3 f(x) = x^2 + 3x + 5?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],f'(x) = 2x + 3,needs_manual_review,manual_review
+algorithms_001,algorithms,phi_api,english,What is the time complexity of binary search on a sorted array of n elements?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],O(log n),needs_manual_review,manual_review
+algorithms_001,algorithms,phi_api,french,Quelle est la complexité temporelle de la recherche binaire sur un tableau trié de n éléments?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],O(log n),needs_manual_review,manual_review
+algorithms_001,algorithms,phi_api,msa,ما هو تعقيد الوقت لخوارزمية البحث الثنائي على مصفوفة مرتبة من n عنصر؟,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],O(log n),needs_manual_review,manual_review
+algorithms_001,algorithms,phi_api,code_switched_tn,Chnouwa el time complexity mta3 binary search fi sorted array fih n elements?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],O(log n),needs_manual_review,manual_review
+debugging_001,debugging,phi_api,english,A Python function returns None instead of the expected integer. The function computes a sum but the return statement is missing. What is the bug?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],Missing return statement,needs_manual_review,manual_review
+debugging_001,debugging,phi_api,french,Une fonction Python retourne None au lieu de l'entier attendu. La fonction calcule une somme mais l'instruction return est manquante. Quel est le bug?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],Missing return statement,needs_manual_review,manual_review
+debugging_001,debugging,phi_api,msa,ترجع دالة بايثون القيمة None بدلاً من العدد الصحيح المتوقع. تحسب الدالة مجموعاً لكن تعليمة الإرجاع مفقودة. ما هو الخطأ البرمجي؟,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],Missing return statement,needs_manual_review,manual_review
+debugging_001,debugging,phi_api,code_switched_tn,3andi fonction Python torja3 None badal el integer eli ykhdam. El fonction tcalculi somme mé el return statement manquant. Chnouwa el bug?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],Missing return statement,needs_manual_review,manual_review
+networking_001,networking,phi_api,english,What is the maximum number of host addresses in a /24 subnet?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],254,needs_manual_review,manual_review
+networking_001,networking,phi_api,french,Quel est le nombre maximum d'adresses d'hôtes dans un sous-réseau /24?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],254,needs_manual_review,manual_review
+networking_001,networking,phi_api,msa,ما هو الحد الأقصى لعدد عناوين المضيفين في شبكة فرعية /24؟,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],254,needs_manual_review,manual_review
+networking_001,networking,phi_api,code_switched_tn,Qaddech el nombre max mta3 host addresses fi subnet /24?,[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],254,needs_manual_review,manual_review
+physics_001,physics,phi_api,english,An object is dropped from rest and falls for 3 seconds. What is its velocity just before hitting the ground? (g = 10 m/s²),[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],30 m/s,needs_manual_review,manual_review
+physics_001,physics,phi_api,french,Un objet est lâché depuis le repos et tombe pendant 3 secondes. Quelle est sa vitesse juste avant de toucher le sol? (g = 10 m/s²),[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],30 m/s,needs_manual_review,manual_review
+physics_001,physics,phi_api,msa,جسم يسقط من حالة سكون ويهبط لمدة 3 ثوان. ما هي سرعته لحظة ارتطامه بالأرض؟ (g = 10 م/ث²),[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],30 m/s,needs_manual_review,manual_review
+physics_001,physics,phi_api,code_switched_tn,Objet yetlah mel repos w yoq3 3 secondes. Qaddech vitesse ta3ha juste avant ma yousel lel sol? (g = 10 m/s²),[GENERATION_ERROR: huggingface_hub is required.  pip install huggingface_hub],30 m/s,needs_manual_review,manual_review
 circuits_001,circuits,atlas,english,A circuit has a resistance of 10 ohms and a current of 2 amperes flowing through it. What is the voltage across the resistor?,"20V
 
 The voltage across the resistor can be calculated using Ohm's Law, which states that the voltage (V) across a resistor is equal to the current (I) flowing through it multiplied by its resistance (R). 
@@ -709,8 +709,8 @@ Substituting the given values into the formula:
 V = 2A * 10 ohms
 V = 20V
 
-Therefore, the voltage across the resistor is 20V.",20V,correct
-circuits_001,circuits,atlas,french,Un circuit a une résistance de 10 ohms et un courant de 2 ampères qui le traverse. Quelle est la tension aux bornes de la résistance?,10V,20V,incorrect
+Therefore, the voltage across the resistor is 20V.",20V,correct,standalone_normalized
+circuits_001,circuits,atlas,french,Un circuit a une résistance de 10 ohms et un courant de 2 ampères qui le traverse. Quelle est la tension aux bornes de la résistance?,10V,20V,incorrect,no_match
 circuits_001,circuits,atlas,msa,دائرة كهربائية تحتوي على مقاومة 10 أوم ويسري خلالها تيار شدته 2 أمبير. ما هو الجهد الكهربائي عبر المقاومة؟,"20
 {
   ""answer"": ""20""
@@ -727,7 +727,7 @@ circuits_001,circuits,atlas,msa,دائرة كهربائية تحتوي على م
 {
   ""answer"": ""20""
 }
-الجهد الكهربائي عبر المقاومة كيتحسب بضرب المقاومة في التيار. فهاد الحالة، المقاومة هي 10 أوم والتيار هو 2 أمبير، إذن الجهد الكهربائي عبر المقاومة هو 2",20V,incorrect
+الجهد الكهربائي عبر المقاومة كيتحسب بضرب المقاومة في التيار. فهاد الحالة، المقاومة هي 10 أوم والتيار هو 2 أمبير، إذن الجهد الكهربائي عبر المقاومة هو 2",20V,incorrect,no_match
 circuits_001,circuits,atlas,code_switched_tn,3andi circuit avec une résistance de 10 ohms w current ta3ha 2 ampères. Qaddech el voltage 3la el résistance?,"3V
 3andi circuit avec une résistance de 10 ohms w current ta3ha 2 ampères. Qaddech el voltage 3la el résistance?
 * 3V
@@ -743,7 +743,7 @@ circuits_001,circuits,atlas,code_switched_tn,3andi circuit avec une résistance 
 * 3V
 3andi circuit avec une résistance de 10 ohms w current ta3ha 2 ampères. Qaddech el voltage 3la el résistance?
 * 3V
-3andi circuit avec une résistance de 10 ohms w current ta3ha 2 ampères. Q",20V,incorrect
+3andi circuit avec une résistance de 10 ohms w current ta3ha 2 ampères. Q",20V,incorrect,no_match
 circuits_002,circuits,atlas,english,Two resistors of 4 ohms and 6 ohms are connected in series. What is the total resistance?,"10 ohms
 
 R_total = R1 + R2 = 4 ohms + 6 ohms = 10 ohms
@@ -807,7 +807,7 @@ OR \
 10 = 10
 \
 OR \
-10 = 1",10 ohms,correct
+10 = 1",10 ohms,correct,standalone_normalized
 circuits_002,circuits,atlas,french,Deux résistances de 4 ohms et 6 ohms sont connectées en série. Quelle est la résistance totale?,"10 ohms
 R_total = R1 + R2 = 4 ohms + 6 ohms = 10 ohms
 
@@ -899,8 +899,8 @@ Answer: 10.
 |
 |
 |
-|",10 ohms,correct
-circuits_002,circuits,atlas,msa,مقاومتان قيمتاهما 4 أوم و6 أوم متصلتان على التوالي. ما هي المقاومة الكلية؟,2.67,10 ohms,incorrect
+|",10 ohms,correct,standalone_normalized
+circuits_002,circuits,atlas,msa,مقاومتان قيمتاهما 4 أوم و6 أوم متصلتان على التوالي. ما هي المقاومة الكلية؟,2.67,10 ohms,incorrect,no_match
 circuits_002,circuits,atlas,code_switched_tn,3andi deux résistances — wahda 4 ohms w l'autre 6 ohms — mwaslén en série. Qaddech el résistance totale?,"4.8 ohms
 \
 **Explanation:**
@@ -928,7 +928,7 @@ The total resistance of resistors in series is the sum of their individual resis
 \
 **Note:** 10 ohms is the total resistance of the two resistors in series.
 \
-**Note:** 10",10 ohms,correct
+**Note:** 10",10 ohms,correct,standalone_normalized
 math_001,math,atlas,english,What is the derivative of f(x) = x^2 + 3x + 5?,"2x + 3
 |
 |
@@ -998,7 +998,7 @@ math_001,math,atlas,english,What is the derivative of f(x) = x^2 + 3x + 5?,"2x +
 | 2x + 3
 |
 |
-| 2",f'(x) = 2x + 3,incorrect
+| 2",f'(x) = 2x + 3,incorrect,no_match
 math_001,math,atlas,french,Quelle est la dérivée de f(x) = x^2 + 3x + 5?,"f'(x) = 2x + 3
 
 |
@@ -1066,7 +1066,7 @@ math_001,math,atlas,french,Quelle est la dérivée de f(x) = x^2 + 3x + 5?,"f'(x
 | 2x + 3
 |
 |
-| 2x + 3",f'(x) = 2x + 3,correct
+| 2x + 3",f'(x) = 2x + 3,correct,standalone_normalized
 networking_001,networking,atlas,english,What is the maximum number of host addresses in a /24 subnet?,"254
 The maximum number of host addresses in a /24 subnet is 254.
 The formula for calculating the maximum number of host addresses in a subnet is:
@@ -1098,8 +1098,8 @@ The formula for calculating the maximum number of host addresses in a subnet is:
 
 2^((32 - subnet mask) / 8)
 
-In the case of a /24",254,correct
-networking_001,networking,atlas,french,Quel est le nombre maximum d'adresses d'hôtes dans un sous-réseau /24?,254,254,correct
+In the case of a /24",254,correct,standalone_normalized
+networking_001,networking,atlas,french,Quel est le nombre maximum d'adresses d'hôtes dans un sous-réseau /24?,254,254,correct,exact_or_standalone_normalized
 networking_001,networking,atlas,msa,ما هو الحد الأقصى لعدد عناوين المضيفين في شبكة فرعية /24؟,"254
 *254*
 *254*
@@ -1143,7 +1143,7 @@ networking_001,networking,atlas,msa,ما هو الحد الأقصى لعدد ع�
 *254*
 *254*
 *254*
-*",254,correct
+*",254,correct,standalone_normalized
 networking_001,networking,atlas,code_switched_tn,Qaddech el nombre max mta3 host addresses fi subnet /24?,"254
 254
 254
@@ -1203,7 +1203,7 @@ networking_001,networking,atlas,code_switched_tn,Qaddech el nombre max mta3 host
 254
 254
 254
-254",254,correct
+254",254,correct,standalone_normalized
 physics_001,physics,atlas,english,An object is dropped from rest and falls for 3 seconds. What is its velocity just before hitting the ground? (g = 10 m/s²),"14.0 m/s
 
 Sample Response: 14.0
@@ -1220,7 +1220,7 @@ Sample Response: 14.0
 *Note: The answer provided is consistent with the units of meters per second as requested.
 *Note: The answer provided is consistent with the units of meters per second as requested.
 *Note: The answer provided is consistent with the units of meters per second as requested.
-*Note: The answer provided is consistent with the units of",30 m/s,incorrect
+*Note: The answer provided is consistent with the units of",30 m/s,incorrect,no_match
 physics_001,physics,atlas,french,Un objet est lâché depuis le repos et tombe pendant 3 secondes. Quelle est sa vitesse juste avant de toucher le sol? (g = 10 m/s²),"14.29 m/s
 Answer: 14.29
 $$v = u + gt$$ $$v = 0 + 10 \times 3$$ $$v = 14.29 m/s$$
@@ -1321,7 +1321,7 @@ $$v = u + gt$$ $$v = 0 + 10 \times 3$$ $$v = 14.29 m/s$$
 |
 |
 |
-|",30 m/s,incorrect
+|",30 m/s,incorrect,no_match
 physics_001,physics,atlas,msa,جسم يسقط من حالة سكون ويهبط لمدة 3 ثوان. ما هي سرعته لحظة ارتطامه بالأرض؟ (g = 10 م/ث²),"10 م/ث²
 
 الجواب: 10 م/ث²
@@ -1359,7 +1359,7 @@ physics_001,physics,atlas,msa,جسم يسقط من حالة سكون ويهبط 
 10 م/ث²
 10 م/ث²
 10 م/ث²
-10 م/ث²",30 m/s,incorrect
+10 م/ث²",30 m/s,incorrect,no_match
 physics_001,physics,atlas,code_switched_tn,Objet yetlah mel repos w yoq3 3 secondes. Qaddech vitesse ta3ha juste avant ma yousel lel sol? (g = 10 m/s²),"10
 ta3ha
 10 m/s²
@@ -1398,40 +1398,40 @@ ta3ha
 10 m/s²
 10 m/s²
 10 m/s²
-10 m",30 m/s,incorrect
-circuits_001,circuits,qwen_3b,english,A circuit has a resistance of 10 ohms and a current of 2 amperes flowing through it. What is the voltage across the resistor?,20V,20V,correct
-circuits_001,circuits,qwen_3b,french,Un circuit a une résistance de 10 ohms et un courant de 2 ampères qui le traverse. Quelle est la tension aux bornes de la résistance?,20V,20V,correct
-circuits_001,circuits,qwen_3b,msa,دائرة كهربائية تحتوي على مقاومة 10 أوم ويسري خلالها تيار شدته 2 أمبير. ما هو الجهد الكهربائي عبر المقاومة؟,20V,20V,correct
-circuits_001,circuits,qwen_3b,code_switched_tn,3andi circuit avec une résistance de 10 ohms w current ta3ha 2 ampères. Qaddech el voltage 3la el résistance?,20V,20V,correct
-circuits_002,circuits,qwen_3b,english,Two resistors of 4 ohms and 6 ohms are connected in series. What is the total resistance?,20Ω,10 ohms,incorrect
-circuits_002,circuits,qwen_3b,french,Deux résistances de 4 ohms et 6 ohms sont connectées en série. Quelle est la résistance totale?,20Ω,10 ohms,incorrect
-circuits_002,circuits,qwen_3b,msa,مقاومتان قيمتاهما 4 أوم و6 أوم متصلتان على التوالي. ما هي المقاومة الكلية؟,18Ω,10 ohms,incorrect
-circuits_002,circuits,qwen_3b,code_switched_tn,3andi deux résistances — wahda 4 ohms w l'autre 6 ohms — mwaslén en série. Qaddech el résistance totale?,10,10 ohms,incorrect
-math_001,math,qwen_3b,english,What is the derivative of f(x) = x^2 + 3x + 5?,4x + 3,f'(x) = 2x + 3,incorrect
-math_001,math,qwen_3b,french,Quelle est la dérivée de f(x) = x^2 + 3x + 5?,4x + 3,f'(x) = 2x + 3,incorrect
-math_001,math,qwen_3b,msa,ما هو مشتق الدالة f(x) = x^2 + 3x + 5؟,4x + 3,f'(x) = 2x + 3,incorrect
-math_001,math,qwen_3b,code_switched_tn,Chnouwa el dérivée mta3 f(x) = x^2 + 3x + 5?,2x + 3,f'(x) = 2x + 3,incorrect
-algorithms_001,algorithms,qwen_3b,english,What is the time complexity of binary search on a sorted array of n elements?,O(log n),O(log n),correct
-algorithms_001,algorithms,qwen_3b,french,Quelle est la complexité temporelle de la recherche binaire sur un tableau trié de n éléments?,O(log n),O(log n),correct
-algorithms_001,algorithms,qwen_3b,msa,ما هو تعقيد الوقت لخوارزمية البحث الثنائي على مصفوفة مرتبة من n عنصر؟,O(log n),O(log n),correct
-algorithms_001,algorithms,qwen_3b,code_switched_tn,Chnouwa el time complexity mta3 binary search fi sorted array fih n elements?,O(log n),O(log n),correct
+10 m",30 m/s,incorrect,no_match
+circuits_001,circuits,qwen_3b,english,A circuit has a resistance of 10 ohms and a current of 2 amperes flowing through it. What is the voltage across the resistor?,20V,20V,correct,exact_or_standalone_normalized
+circuits_001,circuits,qwen_3b,french,Un circuit a une résistance de 10 ohms et un courant de 2 ampères qui le traverse. Quelle est la tension aux bornes de la résistance?,20V,20V,correct,exact_or_standalone_normalized
+circuits_001,circuits,qwen_3b,msa,دائرة كهربائية تحتوي على مقاومة 10 أوم ويسري خلالها تيار شدته 2 أمبير. ما هو الجهد الكهربائي عبر المقاومة؟,20V,20V,correct,exact_or_standalone_normalized
+circuits_001,circuits,qwen_3b,code_switched_tn,3andi circuit avec une résistance de 10 ohms w current ta3ha 2 ampères. Qaddech el voltage 3la el résistance?,20V,20V,correct,exact_or_standalone_normalized
+circuits_002,circuits,qwen_3b,english,Two resistors of 4 ohms and 6 ohms are connected in series. What is the total resistance?,20Ω,10 ohms,incorrect,no_match
+circuits_002,circuits,qwen_3b,french,Deux résistances de 4 ohms et 6 ohms sont connectées en série. Quelle est la résistance totale?,20Ω,10 ohms,incorrect,no_match
+circuits_002,circuits,qwen_3b,msa,مقاومتان قيمتاهما 4 أوم و6 أوم متصلتان على التوالي. ما هي المقاومة الكلية؟,18Ω,10 ohms,incorrect,no_match
+circuits_002,circuits,qwen_3b,code_switched_tn,3andi deux résistances — wahda 4 ohms w l'autre 6 ohms — mwaslén en série. Qaddech el résistance totale?,10,10 ohms,incorrect,no_match
+math_001,math,qwen_3b,english,What is the derivative of f(x) = x^2 + 3x + 5?,4x + 3,f'(x) = 2x + 3,incorrect,no_match
+math_001,math,qwen_3b,french,Quelle est la dérivée de f(x) = x^2 + 3x + 5?,4x + 3,f'(x) = 2x + 3,incorrect,no_match
+math_001,math,qwen_3b,msa,ما هو مشتق الدالة f(x) = x^2 + 3x + 5؟,4x + 3,f'(x) = 2x + 3,incorrect,no_match
+math_001,math,qwen_3b,code_switched_tn,Chnouwa el dérivée mta3 f(x) = x^2 + 3x + 5?,2x + 3,f'(x) = 2x + 3,incorrect,no_match
+algorithms_001,algorithms,qwen_3b,english,What is the time complexity of binary search on a sorted array of n elements?,O(log n),O(log n),correct,exact_or_standalone_normalized
+algorithms_001,algorithms,qwen_3b,french,Quelle est la complexité temporelle de la recherche binaire sur un tableau trié de n éléments?,O(log n),O(log n),correct,exact_or_standalone_normalized
+algorithms_001,algorithms,qwen_3b,msa,ما هو تعقيد الوقت لخوارزمية البحث الثنائي على مصفوفة مرتبة من n عنصر؟,O(log n),O(log n),correct,exact_or_standalone_normalized
+algorithms_001,algorithms,qwen_3b,code_switched_tn,Chnouwa el time complexity mta3 binary search fi sorted array fih n elements?,O(log n),O(log n),correct,exact_or_standalone_normalized
 debugging_001,debugging,qwen_3b,english,A Python function returns None instead of the expected integer. The function computes a sum but the return statement is missing. What is the bug?,"def compute_sum(numbers):
     total = 0
     for num in numbers:
         total += num
-    return total",Missing return statement,incorrect
-debugging_001,debugging,qwen_3b,french,Une fonction Python retourne None au lieu de l'entier attendu. La fonction calcule une somme mais l'instruction return est manquante. Quel est le bug?,204,Missing return statement,incorrect
-debugging_001,debugging,qwen_3b,msa,ترجع دالة بايثون القيمة None بدلاً من العدد الصحيح المتوقع. تحسب الدالة مجموعاً لكن تعليمة الإرجاع مفقودة. ما هو الخطأ البرمجي؟,O(1),Missing return statement,incorrect
+    return total",Missing return statement,incorrect,no_match
+debugging_001,debugging,qwen_3b,french,Une fonction Python retourne None au lieu de l'entier attendu. La fonction calcule une somme mais l'instruction return est manquante. Quel est le bug?,204,Missing return statement,incorrect,no_match
+debugging_001,debugging,qwen_3b,msa,ترجع دالة بايثون القيمة None بدلاً من العدد الصحيح المتوقع. تحسب الدالة مجموعاً لكن تعليمة الإرجاع مفقودة. ما هو الخطأ البرمجي؟,O(1),Missing return statement,incorrect,no_match
 debugging_001,debugging,qwen_3b,code_switched_tn,3andi fonction Python torja3 None badal el integer eli ykhdam. El fonction tcalculi somme mé el return statement manquant. Chnouwa el bug?,"def calculate_sum(numbers):
     total = 0
     for number in numbers:
         total += number
-    return total",Missing return statement,incorrect
-networking_001,networking,qwen_3b,english,What is the maximum number of host addresses in a /24 subnet?,254,254,correct
-networking_001,networking,qwen_3b,french,Quel est le nombre maximum d'adresses d'hôtes dans un sous-réseau /24?,254,254,correct
-networking_001,networking,qwen_3b,msa,ما هو الحد الأقصى لعدد عناوين المضيفين في شبكة فرعية /24؟,254,254,correct
-networking_001,networking,qwen_3b,code_switched_tn,Qaddech el nombre max mta3 host addresses fi subnet /24?,254,254,correct
-physics_001,physics,qwen_3b,english,An object is dropped from rest and falls for 3 seconds. What is its velocity just before hitting the ground? (g = 10 m/s²),75,30 m/s,incorrect
-physics_001,physics,qwen_3b,french,Un objet est lâché depuis le repos et tombe pendant 3 secondes. Quelle est sa vitesse juste avant de toucher le sol? (g = 10 m/s²),250V,30 m/s,incorrect
-physics_001,physics,qwen_3b,msa,جسم يسقط من حالة سكون ويهبط لمدة 3 ثوان. ما هي سرعته لحظة ارتطامه بالأرض؟ (g = 10 م/ث²),50V,30 m/s,incorrect
-physics_001,physics,qwen_3b,code_switched_tn,Objet yetlah mel repos w yoq3 3 secondes. Qaddech vitesse ta3ha juste avant ma yousel lel sol? (g = 10 m/s²),100,30 m/s,incorrect
+    return total",Missing return statement,incorrect,no_match
+networking_001,networking,qwen_3b,english,What is the maximum number of host addresses in a /24 subnet?,254,254,correct,exact_or_standalone_normalized
+networking_001,networking,qwen_3b,french,Quel est le nombre maximum d'adresses d'hôtes dans un sous-réseau /24?,254,254,correct,exact_or_standalone_normalized
+networking_001,networking,qwen_3b,msa,ما هو الحد الأقصى لعدد عناوين المضيفين في شبكة فرعية /24؟,254,254,correct,exact_or_standalone_normalized
+networking_001,networking,qwen_3b,code_switched_tn,Qaddech el nombre max mta3 host addresses fi subnet /24?,254,254,correct,exact_or_standalone_normalized
+physics_001,physics,qwen_3b,english,An object is dropped from rest and falls for 3 seconds. What is its velocity just before hitting the ground? (g = 10 m/s²),75,30 m/s,incorrect,no_match
+physics_001,physics,qwen_3b,french,Un objet est lâché depuis le repos et tombe pendant 3 secondes. Quelle est sa vitesse juste avant de toucher le sol? (g = 10 m/s²),250V,30 m/s,incorrect,no_match
+physics_001,physics,qwen_3b,msa,جسم يسقط من حالة سكون ويهبط لمدة 3 ثوان. ما هي سرعته لحظة ارتطامه بالأرض؟ (g = 10 م/ث²),50V,30 m/s,incorrect,no_match
+physics_001,physics,qwen_3b,code_switched_tn,Objet yetlah mel repos w yoq3 3 secondes. Qaddech vitesse ta3ha juste avant ma yousel lel sol? (g = 10 m/s²),100,30 m/s,incorrect,no_match

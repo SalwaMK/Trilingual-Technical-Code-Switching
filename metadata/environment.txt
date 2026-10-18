@@ -1,0 +1,6 @@
+python=3.14.8
+platform=Linux-6.18.55-2-cachyos-lts-x86_64-with-glibc2.44
+transformers=None
+torch=None
+datasets=None
+huggingface_hub=None

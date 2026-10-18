@@ -10,8 +10,8 @@ Scoring logic
 -------------
 The `score` column can take three values:
 
-  "correct"             — model response contains the expected answer
-                          (case-insensitive, stripped, fuzzy substring match)
+  "correct"             — response matches a normalized answer or contains
+                          a standalone normalized answer token
   "incorrect"           — model response was generated but doesn't match
   "needs_manual_review" — expected answer is empty/missing, or the response
                           is a generation error, so automatic scoring isn't
@@ -50,7 +50,7 @@ SUMMARY_OUTPUT = RESULTS_DIR / "summary.csv"
 
 _GENERATION_ERROR_RE = re.compile(r"^\[GENERATION_ERROR", re.IGNORECASE)
 
-# Canonical short forms for common unit spellings
+# Canonical short forms for common unit spellings.
 _UNIT_MAP = {
     r"\bvolts?\b":   "v",
     r"\bamperes?\b": "a",
@@ -68,14 +68,23 @@ _UNIT_MAP = {
 
 
 def _normalise(text: str) -> str:
-    """Lowercase, collapse whitespace, normalise unit spellings and spacing."""
+    """Normalize case, markdown noise, units, Unicode symbols, and spacing."""
     t = re.sub(r"\s+", " ", str(text).lower().strip())
+    t = t.replace("−", "-").replace("–", "-").replace("×", "x")
+    t = t.replace("Ω", "ohm").replace("ω", "ohm")
+    t = re.sub(r"[`*_]", "", t)
     # Expand unit names to short forms
     for pattern, replacement in _UNIT_MAP.items():
         t = re.sub(pattern, replacement, t)
     # Remove spaces between a number and an adjacent unit (e.g. "20 v" -> "20v")
     t = re.sub(r"(\d)\s+([a-zμΩ°·/])", r"\1\2", t)
     return t
+
+
+def _standalone_answer_in_response(response: str, expected: str) -> bool:
+    """Match an answer as a token, avoiding arbitrary substring matches."""
+    pattern = rf"(?<![a-z0-9]){re.escape(expected)}(?![a-z0-9])"
+    return re.search(pattern, response) is not None
 
 
 def _score_row(response: str, expected: str) -> str:
@@ -85,8 +94,8 @@ def _score_row(response: str, expected: str) -> str:
     Rules (evaluated in order):
     1. If expected is empty/NaN → needs_manual_review
     2. If response starts with [GENERATION_ERROR → needs_manual_review
-    3. Exact match (after normalisation) → correct
-    4. Fuzzy: normalised expected is a substring of normalised response → correct
+    3. Exact normalized match → correct
+    4. Standalone normalized answer token in response → correct
     5. Otherwise → incorrect
     """
     # 1. Missing expected answer
@@ -101,7 +110,9 @@ def _score_row(response: str, expected: str) -> str:
     norm_expected = _normalise(expected)
 
     # 3 & 4. Exact or fuzzy substring match
-    if norm_expected == norm_response or norm_expected in norm_response:
+    if norm_expected == norm_response:
+        return "correct"
+    if _standalone_answer_in_response(norm_response, norm_expected):
         return "correct"
 
     # 5. No match
@@ -133,6 +144,19 @@ def score(input_path: Path) -> pd.DataFrame:
 
     df["score"] = df.apply(
         lambda row: _score_row(row["model_response"], row["expected_answer"]),
+        axis=1,
+    )
+    df["match_type"] = df.apply(
+        lambda row: (
+            "manual_review" if row["score"] == "needs_manual_review"
+            else "exact_or_standalone_normalized"
+            if _normalise(row["model_response"]) == _normalise(row["expected_answer"])
+            else "standalone_normalized"
+            if _standalone_answer_in_response(
+                _normalise(row["model_response"]), _normalise(row["expected_answer"])
+            )
+            else "no_match"
+        ),
         axis=1,
     )
 

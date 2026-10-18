@@ -1,0 +1,7 @@
+{
+  "primary_model_id": "Qwen/Qwen2.5-3B-Instruct",
+  "comparison_model_id": "MBZUAI-Paris/Atlas-Chat-2B",
+  "primary_model_revision": "TODO: record the exact commit used",
+  "parameter_count": "TODO: record from the loaded model",
+  "note": "Do not call Atlas a Tunisian model; its model card describes Moroccan Arabic/Darija."
+}

@@ -72,9 +72,10 @@ MODEL_CONFIGS = {
     "atlas": {
         "model_id": "MBZUAI-Paris/Atlas-Chat-2B",
         "params": "2B",
-        "description": "Atlas-Chat (2B) — purpose-built for Arabic + French + English",
+        "description": "Atlas-Chat (2B) — Moroccan Arabic/Darija comparison model",
         "expected_languages": ["ar", "fr", "en"],
         "backend": "huggingface",
+        "challenge_eligible": True,
     },
     "qwen_3b": {
         "model_id": "Qwen/Qwen2.5-3B-Instruct",
@@ -82,6 +83,7 @@ MODEL_CONFIGS = {
         "description": "Qwen2.5-Instruct (3B) — strong multilingual (En/Ar/Fr/Zh)",
         "expected_languages": ["zh", "en", "ar", "fr"],
         "backend": "huggingface",
+        "challenge_eligible": True,
     },
     "jais": {
         "model_id": "inceptionai/jais-family-2p7b-chat",
@@ -89,6 +91,7 @@ MODEL_CONFIGS = {
         "description": "Jais-family-2.7B-chat — Arabic + English, Inception AI",
         "expected_languages": ["ar", "en"],
         "backend": "huggingface",
+        "challenge_eligible": True,
     },
     "phi": {
         "model_id": "microsoft/Phi-3.5-mini-instruct",
@@ -96,6 +99,7 @@ MODEL_CONFIGS = {
         "description": "Phi-3.5-mini-instruct (3.8B) — decent multilingual, Microsoft",
         "expected_languages": ["en", "ar", "fr"],
         "backend": "huggingface",
+        "challenge_eligible": True,
     },
     "qwen_15b": {
         "model_id": "Qwen/Qwen2.5-1.5B-Instruct",
@@ -103,6 +107,7 @@ MODEL_CONFIGS = {
         "description": "Qwen2.5-Instruct (1.5B) — compact multilingual",
         "expected_languages": ["zh", "en", "ar", "fr"],
         "backend": "huggingface",
+        "challenge_eligible": True,
     },
     "qwen_05b": {
         "model_id": "Qwen/Qwen2.5-0.5B-Instruct",
@@ -110,6 +115,7 @@ MODEL_CONFIGS = {
         "description": "Qwen2.5-Instruct (0.5B) — tiny baseline",
         "expected_languages": ["zh", "en"],
         "backend": "huggingface",
+        "challenge_eligible": False,
     },
 
     # ── HuggingFace Inference API (optional, limited model support) ─────────
@@ -124,6 +130,7 @@ MODEL_CONFIGS = {
         "description": "Qwen2.5-Instruct (3B) via HF Inference API (no download)",
         "expected_languages": ["zh", "en", "ar", "fr"],
         "backend": "hf_api",
+        "challenge_eligible": True,
     },
     "phi_api": {
         "model_id": "microsoft/Phi-3.5-mini-instruct",
@@ -131,6 +138,7 @@ MODEL_CONFIGS = {
         "description": "Phi-3.5-mini-instruct (3.8B) via HF Inference API (no download)",
         "expected_languages": ["en", "ar", "fr"],
         "backend": "hf_api",
+        "challenge_eligible": True,
     },
 
     # ── Ollama (locally served, already on your machine) ───────────────────
@@ -142,6 +150,7 @@ MODEL_CONFIGS = {
         "description": "DeepSeek-R1 (14B) via Ollama — reasoning model, <think> stripped",
         "expected_languages": ["en", "zh", "ar", "fr"],
         "backend": "ollama",
+        "challenge_eligible": False,
     },
     "qwen_coder": {
         "model_id": "qwen2.5-coder:14b",
@@ -150,6 +159,7 @@ MODEL_CONFIGS = {
         "description": "Qwen2.5-Coder (14B) via Ollama — strongest on coding domains",
         "expected_languages": ["en", "zh"],
         "backend": "ollama",
+        "challenge_eligible": False,
     },
     "qwen_mini": {
         "model_id": "qwen2.5-coder:1.5b",
@@ -158,6 +168,7 @@ MODEL_CONFIGS = {
         "description": "Qwen2.5-Coder (1.5B) via Ollama — fast, lightweight",
         "expected_languages": ["en", "zh"],
         "backend": "ollama",
+        "challenge_eligible": False,
     },
 }
 
@@ -166,8 +177,8 @@ HF_LOCAL_MODELS = [k for k, v in MODEL_CONFIGS.items() if v["backend"] == "huggi
 HF_API_MODELS   = [k for k, v in MODEL_CONFIGS.items() if v["backend"] == "hf_api"]
 OLLAMA_MODELS   = [k for k, v in MODEL_CONFIGS.items() if v["backend"] == "ollama"]
 
-# Default: three best multilingual HF models (local, 0.3B–6B range)
-DEFAULT_MODELS = ["atlas", "qwen_3b", "jais"]
+# Default: one primary eligible Hugging Face model for a clean challenge run.
+DEFAULT_MODELS = ["qwen_3b"]
 
 
 # ---------------------------------------------------------------------------
@@ -185,6 +196,11 @@ def is_hf_api(name: str) -> bool:
 
 def is_ollama(name: str) -> bool:
     return get_backend(name) == "ollama"
+
+
+def is_challenge_eligible(name: str) -> bool:
+    """Return whether a registry entry is within the 0.6B–6B target range."""
+    return bool(MODEL_CONFIGS.get(name, {}).get("challenge_eligible", False))
 
 
 # ---------------------------------------------------------------------------
@@ -236,8 +252,8 @@ def generate_response(
     tokenizer,
     prompt: str,
     max_new_tokens: int = 300,
-    temperature: float = 0.1,
-    do_sample: bool = True,
+    temperature: float = 0.0,
+    do_sample: bool = False,
 ) -> str:
     """Run inference with a locally loaded HF model.
 

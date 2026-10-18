@@ -1,427 +1,150 @@
-# Trilingual Technical Code-Switching Evaluation
-
-An open-source benchmark and evaluation framework studying how well small open-weight language models (**0.3B – 6B parameters**) handle **Tunisian trilingual technical code-switching**.
-
-In real-world North African technical communities (software engineering, electrical engineering, STEM academia), communication rarely happens in a single language. Speakers naturally alternate between:
-
-- 🇹🇳 **Derja (Tunisian Arabic)** in Latin script (Arabizi) — syntactic scaffolding and conversational discourse (`3andi`, `kifesh`, `w`, `bch`)
-- 🇫🇷 **French** — structural scientific and academic terminology (`avec une résistance`, `la dérivée`, `connectées en série`)
-- 🇬🇧 **English** — core modern technical concepts (`circuit`, `voltage`, `binary search`, `debugging`)
-
----
-
-## 📌 Research Motivation
-
-Most multilingual LLM benchmarks evaluate models on clean monolingual inputs (MMLU English, MMLU Arabic, French ARC). However:
-
-1. **Dialectal and code-switched inputs cause severe performance degradation** in standard models.
-2. Small models (≤ 6B parameters) deployed on-device or locally are especially vulnerable to out-of-distribution linguistic mixing.
-3. This project measures whether models maintain reasoning consistency across clean monolingual representations vs. realistic trilingual code-switched prompts.
-
----
-
-## 📂 Dataset Specification
-
-The core evaluation benchmark is stored in [`data/core_problems.json`](data/core_problems.json).
-
-Each entry contains a problem across **6 technical domains** represented in **4 parallel language conditions** that share an identical expected answer.
-
-### Schema
-
-```json
-{
-  "id": "circuits_001",
-  "domain": "circuits",
-  "english": "A circuit has a resistance of 10 ohms and a current of 2 amperes flowing through it. What is the voltage across the resistor?",
-  "french": "Un circuit a une résistance de 10 ohms et un courant de 2 ampères qui le traverse. Quelle est la tension aux bornes de la résistance?",
-  "msa": "دائرة كهربائية تحتوي على مقاومة 10 أوم ويسري خلالها تيار شدته 2 أمبير. ما هو الجهد الكهربائي عبر المقاومة؟",
-  "code_switched_tn": "3andi circuit avec une résistance de 10 ohms w current ta3ha 2 ampères. Qaddech el voltage 3la el résistance?",
-  "expected_answer": "20V"
-}
-```
-
-### Domains Covered
-
-| Domain | Topics |
-|---|---|
-| `circuits` | Circuit analysis, Ohm's law, component topologies |
-| `debugging` | Error diagnosis, syntax and runtime bugs |
-| `math` | Calculus, algebra, discrete mathematics |
-| `physics` | Mechanics, kinematics, thermodynamics |
-| `algorithms` | Big-O complexity, data structures, search & sorting |
-| `networking` | Subnetting, IP addressing, protocols |
-
----
-
-## 🤖 Models Supported
-
-Three inference backends are available. **HuggingFace local is the primary recommendation** — works with any HF model, no API limits, uses your GPU.
-
-### 🟢 HuggingFace local — recommended (0.3B–6B range)
-
-Weights are downloaded from HF on first run (~2–8 GB each) and cached. Requires a CUDA GPU with ≥ 6 GB VRAM.
-
-| Key | Model ID | Params | Multilingual strength |
-|---|---|---|---|
-| `atlas` | `MBZUAI-Paris/Atlas-Chat-2B` | 2B | ⭐⭐⭐ Purpose-built for Arabic + French + English |
-| `qwen_3b` | `Qwen/Qwen2.5-3B-Instruct` | 3B | ⭐⭐⭐ Strong across Ar / Fr / En / Zh |
-| `jais` | `inceptionai/jais-family-2p7b-chat` | 2.7B | ⭐⭐ Arabic + English focus |
-| `phi` | `microsoft/Phi-3.5-mini-instruct` | 3.8B | ⭐⭐ Decent multilingual |
-| `qwen_15b` | `Qwen/Qwen2.5-1.5B-Instruct` | 1.5B | ⭐⭐ Compact multilingual |
-| `qwen_05b` | `Qwen/Qwen2.5-0.5B-Instruct` | 0.5B | ⭐ Tiny baseline |
-
-**Default evaluation set:** `atlas`, `qwen_3b`, `jais`
-
-### 🔵 HuggingFace Inference API — optional, limited model support
-
-Uses HF’s own TGI servers (`provider="hf-inference"`). Only works for popular models HF has deployed on their infrastructure. Niche multilingual models (Atlas, Jais) are **not** available — use local instead.
-
-Requires a free token from [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens).
-
-| Key | Model ID | Params | Notes |
-|---|---|---|---|
-| `qwen_3b_api` | `Qwen/Qwen2.5-3B-Instruct` | 3B | No download needed |
-| `phi_api` | `microsoft/Phi-3.5-mini-instruct` | 3.8B | No download needed |
-
-### 🟠 Ollama — locally served models (already on your machine)
-
-| Key | Ollama tag | Params | Notes |
-|---|---|---|---|
-| `deepseek` | `deepseek-r1:14b` | 14B | `<think>` blocks stripped automatically |
-| `qwen_coder` | `qwen2.5-coder:14b` | 14B | Strongest on coding / algorithms |
-| `qwen_mini` | `qwen2.5-coder:1.5b` | 1.5B | Fast, lightweight |
-
----
-
-## 📁 Repository Structure
-
-```
-├── data/
-│   ├── core_problems.json          # Main benchmark (7 problems, 6 domains)
-│   ├── core_problems_template.json # Empty schema template for contributors
-│   └── control_benchmarks/         # Baseline benchmarks (populated by fetch_controls.py)
-├── results/                        # Generated at runtime
-│   ├── raw_outputs.csv             # Raw model responses — 1 row per (problem, model, condition)
-│   ├── scored_results.csv          # Rows labelled: correct / incorrect / needs_manual_review
-│   ├── summary.csv                 # Accuracy pivot table: condition × model
-│   └── accuracy_by_condition.png   # Grouped bar chart
-├── scripts/
-│   ├── load_models.py              # All three backend implementations + model registry
-│   ├── run_eval.py                 # Main evaluation runner (resumable, CLI options)
-│   ├── score_results.py            # Normalised substring-match scoring pipeline
-│   ├── analyze.py                  # Matplotlib grouped bar-chart generator
-│   ├── validate_dataset.py         # Schema & answer-consistency validator
-│   ├── smoke_test.py               # One-prompt test across selected models
-│   ├── fetch_controls.py           # Downloads CodeMixBench / CodeMixQA baselines
-│   ├── fetch_tunisia_tech.py       # Fetches & filters Farah21/Tunisia_Tech
-│   ├── fetch_tunswitch.py          # Extracts transcripts from TunSwitch audio repo
-│   └── inspect_controls.py        # Diagnostic report for control benchmark CSVs
-├── notebooks/                      # Analysis & exploration notebooks (user-populated)
-├── requirements.txt
-└── README.md
-```
-
----
-
-## 🔄 How It Works — Pipeline Overview
-
-```
-data/core_problems.json
-        │
-        ▼
- [1] validate_dataset.py   ─── schema check, unique IDs, non-empty fields
-        │
-        ▼
- [2] run_eval.py           ─── for each model × problem × condition:
-        │                       send prompt → collect response → append to CSV
-        │                      (resumable — skips already-done rows)
-        ▼
- [3] score_results.py      ─── normalised substring match
-        │                       correct / incorrect / needs_manual_review
-        │                       → scored_results.csv + summary.csv
-        ▼
- [4] analyze.py            ─── reads summary.csv
-                                → accuracy_by_condition.png (grouped bar chart)
-```
-
-### Stage 1 — Dataset Validation
-
-**Input:** `data/core_problems.json`
-
-Checks every entry for:
-- All 7 required fields present and non-empty: `id`, `domain`, `english`, `french`, `msa`, `code_switched_tn`, `expected_answer`
-- Globally unique `id` values
-- No duplicate IDs with differing `expected_answer`
-
-**Output:** Pass/Fail report to stdout. Exits with code `1` on any failure.
-
----
-
-### Stage 2 — Model Evaluation
-
-**Input:** `data/core_problems.json`
-
-For each model the runner sends every problem in every requested language condition through the configured backend, wrapping it in the instruction:
-
-> *"Answer concisely with just the answer (e.g. '20V', 'O(log n)', or '254'). Do not explain."*
-
-Results are appended to `results/raw_outputs.csv` every 10 rows — a crash loses at most 10 rows.
-
-**Expected output — `results/raw_outputs.csv`** (4 conditions × 3 models × 7 problems = 84 rows):
-
-| problem_id | domain | model | condition | model_response | expected_answer |
-|---|---|---|---|---|---|
-| circuits_001 | circuits | atlas | english | 20V | 20V |
-| circuits_001 | circuits | atlas | french | 20V | 20V |
-| circuits_001 | circuits | atlas | msa | ٢٠ فولت | 20V |
-| circuits_001 | circuits | atlas | code_switched_tn | 20V | 20V |
-| … | … | … | … | … | … |
-
----
-
-### Stage 3 — Scoring
-
-**Input:** `results/raw_outputs.csv`
-
-Scoring rules (applied in order):
-
-| Priority | Condition | Score |
-|---|---|---|
-| 1 | `expected_answer` is empty / NaN | `needs_manual_review` |
-| 2 | Response starts with `[GENERATION_ERROR` | `needs_manual_review` |
-| 3 | Normalised expected == normalised response | `correct` |
-| 4 | Normalised expected is a substring of normalised response | `correct` |
-| 5 | None of the above | `incorrect` |
-
-`needs_manual_review` rows are excluded from the accuracy denominator.
-
-**Outputs:** `results/scored_results.csv` and `results/summary.csv`
-
-Console summary example:
-
-```
-======================================================================
-  ACCURACY SUMMARY  (correct / auto-scoreable rows)
-======================================================================
-model              atlas  qwen_3b   jais
-condition
-english           85.7%   100.0%  71.4%
-french            71.4%    85.7%  57.1%
-msa               57.1%    71.4%  71.4%
-code_switched_tn  28.6%    57.1%  28.6%
-======================================================================
-```
-
----
-
-### Stage 4 — Visualisation
-
-**Input:** `results/summary.csv`
-
-Renders a grouped bar chart — one cluster per language condition, one bar per model — with accuracy percentages labelled on each bar.
-
-**Output:** `results/accuracy_by_condition.png` (150 dpi PNG)
-
----
-
-## 🚀 How to Run — Step by Step
-
-### Prerequisites
-
-| Backend | What you need |
-|---|---|
-| **HF local** (recommended) | Python 3.10+, CUDA GPU ≥ 6 GB VRAM, ~4–8 GB free disk per model |
-| **HF API** (optional) | Python 3.10+, free HF token — only `qwen_3b_api` and `phi_api` work |
-| **Ollama** | Python 3.10+, Ollama running with models pulled |
-
----
-
-### Step 0 — Clone the repo
-
-```bash
-git clone https://github.com/SalwaMK/Trilingual-Technical-Code-Switching.git
-cd Trilingual-Technical-Code-Switching
-```
-
----
-
-### Step 1 — Create and activate a virtual environment
-
-```bash
-# Using uv (fastest)
-uv venv .venv && source .venv/bin/activate
-uv pip install -r requirements.txt
-
-# Or standard venv
-python3 -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-```
-
-> **Windows:** replace `source .venv/bin/activate` with `.venv\Scripts\activate`
-
----
-
-### Step 2 — Log in to HuggingFace
-
-A token is needed to download model weights (free account is fine).
-
-```bash
-huggingface-cli login
-# paste your token from https://huggingface.co/settings/tokens
-```
-
-or set it as an environment variable:
-
-```bash
-export HF_TOKEN=hf_xxxxxxxxxxxxxxxxxxxx
-```
-
-> `atlas`, `qwen_*`, and `phi` are fully public. The `jais` model is gated —
-> accept its license at
-> [huggingface.co/inceptionai/jais-family-2p7b-chat](https://huggingface.co/inceptionai/jais-family-2p7b-chat)
-> while logged in before first use.
-
----
-
-### Step 3 — Validate the dataset
+# Tunisian Trilingual Technical Code-Switching Evaluation
+
+This repository studies whether small open-weight language models preserve
+technical reasoning when a prompt mixes Tunisian Arabic in Arabizi, French,
+and English.
+
+This is an evaluation scaffold, not a claim that Tunisian code-switching is
+already solved. The final research submission must add the author's genuine
+lived-experience motivation, a clean GPU run, human validation of the
+language data, qualitative error analysis, and a public Hugging Face artifact
+link.
+
+## Research question
+
+> Does a small multilingual model preserve the answer to the same technical
+> problem when Tunisian Arabizi supplies discourse and syntax, French supplies
+> academic terminology, and English supplies technical vocabulary?
+
+The proposed blind spot is a loss of technical relations at language-switch
+boundaries: variables, operations, units, negation, or causal links may be
+dropped even when the model can solve the equivalent monolingual problem.
+
+Replace this statement with a truthful account of your own experience and one
+concrete example. Do not claim a lived experience that is not yours.
+
+## Current dataset
+
+`data/core_problems.json` currently contains 66 parallel problems:
+
+| Domain | Items |
+|---|---:|
+| circuits | 12 |
+| mathematics | 12 |
+| algorithms | 12 |
+| debugging | 10 |
+| networking | 10 |
+| physics | 10 |
+
+Each item has English, French, MSA, Tunisian trilingual code-switched text,
+and an expected answer. The validator checks structure, but it cannot establish
+that a translation is natural or that an answer is correct. Those require human
+review, ideally by a Tunisian Arabic speaker with technical familiarity.
+
+Before submission, add metadata for difficulty, answer type, switch location,
+Arabizi density, and human-review status. Add matched ablations such as
+Tunisian-only, French-English, Tunisian-French, and Tunisian-French-English
+conditions so dialect, code switching, and translation difficulty can be
+separated.
+
+## Primary model
+
+The recommended primary model is `Qwen/Qwen2.5-3B-Instruct`, an open-weight
+Hugging Face model within the challenge's 0.6B–6B range. Record its exact
+revision, parameter count, tokenizer, dtype, hardware, and generation settings
+in run metadata.
+
+`MBZUAI-Paris/Atlas-Chat-2B` may be used as a comparison, but its model card
+describes Moroccan Arabic/Darija; do not present it as a Tunisian specialist
+without evidence. The registry also contains optional models for engineering
+convenience. The 0.5B model and 14B Ollama models are outside the challenge's
+target range and must not be headline results.
+
+## Reproducible pipeline
 
 ```bash
 python scripts/validate_dataset.py
-```
-
-Expected output: `Overall status: PASS  (all 7 entries valid)`
-
----
-
-### Step 4 — Smoke test (optional but recommended)
-
-Sends one trilingual prompt to each model and prints the raw response. Use this to confirm the backend is working before running the full benchmark.
-
-```bash
-# Default: test the three primary HF local models (atlas, qwen_3b, jais)
-python scripts/smoke_test.py
-
-# Specific models
-python scripts/smoke_test.py --models atlas,qwen_3b
-
-# HF API models only (no GPU needed, limited model support)
-python scripts/smoke_test.py --api-only
-
-# Ollama models (must have `ollama serve` running)
-python scripts/smoke_test.py --ollama-only
-```
-
-A successful response looks like:
-```
-  Model   : atlas  (MBZUAI-Paris/Atlas-Chat-2B)
-  Backend : HF local   Params: 2B
-
-  Response:
-  To find voltage using Ohm's law: V = I × R = 2 × 10 = 20V
-```
-
----
-
-### Step 5 — Run the evaluation
-
-```bash
-# ── Recommended: default 3 HF local models (atlas, qwen_3b, jais) ──────
-python scripts/run_eval.py
-
-# Full 6-model suite
-python scripts/run_eval.py --models atlas,qwen_3b,jais,phi,qwen_15b,qwen_05b
-
-# Quick test — first 3 problems, one model
-python scripts/run_eval.py --models atlas --limit 3
-
-# Specific language conditions only
-python scripts/run_eval.py --models atlas,qwen_3b --conditions english,code_switched_tn
-
-# ── HF Inference API (only popular models, no GPU needed) ───────────
-export HF_TOKEN=hf_xxxxxxxxxxxxxxxxxxxx
-python scripts/run_eval.py --models qwen_3b_api,phi_api
-
-# ── Ollama ───────────────────────────────────────────────────
-ollama serve   # in a separate terminal
-python scripts/run_eval.py --models deepseek,qwen_coder,qwen_mini
-```
-
-**All `--models` keys:**
-
-| Group | Keys |
-|---|---|
-| HF local (default) | `atlas` `qwen_3b` `jais` `phi` `qwen_15b` `qwen_05b` |
-| HF API | `qwen_3b_api` `phi_api` |
-| Ollama | `deepseek` `qwen_coder` `qwen_mini` |
-
-**`--conditions`:** `english` `french` `msa` `code_switched_tn`
-
-> **Resumable:** already-evaluated `(problem_id, model, condition)` triples are skipped automatically — safe to interrupt and restart at any time.
-
-Output: `results/raw_outputs.csv`
-
----
-
-### Step 6 — Score the outputs
-
-```bash
-python scripts/score_results.py
-```
-
-Outputs: `results/scored_results.csv` · `results/summary.csv`
-
----
-
-### Step 7 — Generate the accuracy chart
-
-```bash
+python scripts/run_eval.py --models qwen_3b --temperature 0 --max-new-tokens 64 --output results/final_raw_outputs.csv
+python scripts/check_results.py --input results/final_raw_outputs.csv --models qwen_3b
+python scripts/score_results.py --input results/final_raw_outputs.csv
 python scripts/analyze.py
 ```
 
-Output: `results/accuracy_by_condition.png`
+For a local GPU run, install `requirements.txt` and authenticate with Hugging
+Face if required. Colab users should run `notebooks/evaluation.ipynb`; it
+installs dependencies, loads the model, records metadata, evaluates all
+conditions, scores outputs, and saves figures.
 
----
+The runner writes `results/raw_outputs.csv`, `results/run_metadata.json`,
+`results/scored_results.csv`, `results/summary.csv`, and
+`results/accuracy_by_condition.png`.
 
-## 📊 Baseline Control Datasets (Optional)
+Do not interpret the historical CSVs as final evidence: they are partial
+development outputs and include generation errors. A final run must contain
+every selected problem × model × condition combination.
 
-Compare against existing code-switching benchmarks from the literature:
+## Scoring and analysis
 
-```bash
-# Download 500-sample splits of CodeMixBench (Hindi-En, Spanish-En) and CodeMixQA
-python scripts/fetch_controls.py
+The scorer reports automatic matches, records the matching method, and flags
+generation errors or ambiguous cases for manual review. Report both automatic
+accuracy and human-reviewed semantic accuracy. The key comparison is:
 
-# Diagnostic report on the downloaded CSVs
-python scripts/inspect_controls.py
-
-# Auxiliary Tunisian datasets from HuggingFace
-python scripts/fetch_tunisia_tech.py   # Farah21/Tunisia_Tech
-python scripts/fetch_tunswitch.py      # tunis-ai/TunSwitch audio transcripts
+```text
+code-switch penalty = accuracy(code_switched_tn) - accuracy(english)
 ```
 
-All files land in `data/control_benchmarks/` (excluded from git by `.gitignore`).
+The final notebook should also report results by domain, answer type, switch
+location, Arabizi density, and error category, with confidence intervals and
+raw response examples.
 
----
+## Proposed path forward
 
-## 🤝 Contributing
+Build a Tunisian technical code-switching corpus containing naturally occurring
+technical conversations, expert-reviewed answers, multiple Arabizi spellings,
+realistic Tunisian-French-English switches, matched monolingual/code-switched
+pairs, and annotations for switch location, discourse function, technical terms,
+and error type. A plausible intervention is LoRA/QLoRA fine-tuning with
+answer-preservation pairs and preference data. This is a proposal, not an
+experimental result.
 
-Contributions of new technical problems are welcome. Each new entry in `data/core_problems.json` must:
+## Publication checklist
 
-1. Use a `domain` from the 6 canonical domains.
-2. Have `expected_answer` identical across all four language representations.
-3. Use **Latin-script Arabizi only** in `code_switched_tn` — no Arabic-script characters.
-4. Pass `python scripts/validate_dataset.py` before opening a pull request.
+The public Hugging Face Bucket/repository must contain:
 
-### Arabizi conventions used in this dataset
+```text
+README.md
+dataset/evaluation.jsonl
+dataset/dataset_card.md
+notebooks/evaluation.ipynb
+results/raw_outputs.csv
+results/scored_results.csv
+results/summary.csv
+results/figures/
+metadata/model_config.json
+metadata/run_config.json
+metadata/environment.txt
+```
 
-| Arabizi | Arabic | Meaning |
-|---|---|---|
-| `3andi` | عندي | I have |
-| `kifesh` | كيفاش | how |
-| `w` | و | and |
-| `bch` | باش | to / in order to |
-| `Qaddech` | قداش | how much / what is |
-| `mta3` | متاع | of / belonging to |
-| `torja3` | ترجع | returns |
-| `tcalculi` | تكالكولي | computes (Arabizi + French stem) |
-| `Nbaghi` | نبغي | I want to |
-| `nfhem` | نفهم | I understand |
+Add the public URL after uploading:
+
+```text
+Hugging Face URL: TODO — add after publication
+```
+
+Do not upload base model weights unless their license permits redistribution.
+At minimum, publish the exact model ID and revision, dataset, raw outputs,
+notebook, scoring code, metadata, and any trained adapter.
+
+## Project layout
+
+```text
+data/core_problems.json          benchmark data
+data/core_problems_template.json schema template
+data/annotation_template.json    human-review metadata template
+notebooks/evaluation.ipynb       Colab-ready evaluation
+scripts/validate_dataset.py      schema and quality checks
+scripts/run_eval.py              inference and metadata capture
+scripts/score_results.py         automatic scoring
+scripts/analyze.py               figures and summaries
+results/                         generated artifacts
+```
