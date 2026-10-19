@@ -196,6 +196,7 @@ manual-review annotations, these files provide the information needed to
 reproduce and inspect the evaluation.
 
 Public Hugging Face URL: https://huggingface.co/buckets/SiriusBlu/Fatima-Fellowship-Challenge.
+Public Github Repo URL: https://github.com/SalwaMK/Trilingual-Technical-Code-Switching
 
 ## Repository structure
 
